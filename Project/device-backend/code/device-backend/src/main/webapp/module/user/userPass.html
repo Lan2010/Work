@@ -1,0 +1,45 @@
+﻿
+<div class="panel-model panel-modal-form">
+	<div class="panel-form">
+		
+		<form id="formModPass">
+		<div class="panel-body">
+			<div class="cells cells-form">
+				
+				<div class="cell">
+					<div class="hd"><label>用户名</label></div>
+					<div class="bd">
+						<div class="control">
+							<span class="input-read" id="username"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd required"><label>新的密码</label></div>
+					<div class="bd">
+						<div class="control">
+							<input id="password" name="password" type="password" class="input" required rangelength="6,20" />
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd required"><label>再输一次</label></div>
+					<div class="bd">
+						<div class="control">
+							<input id="passwordRepeat" type="password" class="input" required equalTo="#password" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="panel-footer">
+			<button type="submit" class="btn m blue">提交</button>
+		</div>
+		</form>
+
+	</div>
+</div>

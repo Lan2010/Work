@@ -1,0 +1,91 @@
+﻿
+<div class="toolbar">
+	<div class="action full back">
+		<a href="javascript: window.history.back();" class="btn icon-only m"><i class="fa fa-arrow-left"></i></a>
+	</div>
+	<div class="title">上传新固件</div>
+
+</div>
+
+
+<div class="panel-wrap">
+	<div class="panel panel-form">
+		
+		<form id="formAdd" enctype="multipart/form-data">
+
+			<div class="panel-body">
+				<div class="cells cells-form">
+					
+					<div class="cell">
+						<div class="hd required"><label>所属型号</label></div>
+						<div class="bd">
+							<div class="control">
+								<select id="model" name="model" class="input" required></select>
+							</div>
+						</div>
+					</div>
+
+					<div class="cell">
+						<div class="hd required"><label>所属固件</label></div>
+						<div class="bd">
+							<div class="control">
+								<select id="firmwareNameId" name="firmwareNameId" class="input" required></select>
+							</div>
+						</div>
+					</div>
+
+					<div class="cell">
+						<div class="hd required"><label>固件版本</label></div>
+						<div class="bd">
+							<div class="control">
+								<input type="text" name="version" class="input" maxlength="20" required version="true" />
+							</div>
+						</div>
+					</div>
+
+					<div class="cell">
+						<div class="hd"><label>描　　述</label></div>
+						<div class="bd">
+							<div class="control">
+								<textarea name="firmwareDesc" class="input" maxlength="50"></textarea>
+							</div>
+						</div>
+					</div>
+
+					<div class="cell">
+						<div class="hd required"><label>固件文件</label></div>
+						<div class="bd">
+							<div class="control">
+								<div class="control">
+									<div class="fileupload fileupload-new fileupload-file" data-provides="fileupload">	
+										<div class="file-btn">
+											<span class="file-btn-inner btn default">
+												<span class="file-browse">浏览</span>
+												<span class="file-change">更改</span>
+												<input name="file" type="file" class="default input-type2" required />
+											</span>
+										</div>
+										<div class="file-input">
+											<div class="fileupload-preview"></div>
+											<span class="file-eraser" data-dismiss="fileupload">×</span>
+										</div>
+										<div class="thumbnail"></div>
+									</div>
+								</div>
+								<!-- <span class="prompt"></span> -->
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="panel-footer">
+				<button type="submit" class="btn m blue" id="btnSubmit" >提交</button>
+				<button type="button" class="btn m default" onclick="javascript: window.history.back();">返回</button>
+			</div>
+		
+		</form>
+
+	</div>
+</div>

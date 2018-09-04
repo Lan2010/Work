@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.satellite.operation";
+option java_outer_classname = "UserSatelliteOperationServiceProto";
+
+package statellite.oper;
+
+//用户卫星操控服务类
+service UserSatelliteOperationService {
+    //操控
+    rpc operation(UserSatelliteOperationInfo) returns (Result){}
+}
+
+//用户卫星操控信息
+message UserSatelliteOperationInfo{
+    string mobile = 1; //手机号码-必填
+    string operationContent = 2; //操作内容-必填
+    int64 operationTime = 3; //操作时间-必填
+    OperationType operationType = 5; //操作类型 - 必填
+    enum OperationType{
+        ONE = 0;
+        TWO = 1;
+        THREE = 2;
+    }
+    string token = 6;//安全校验码-必填
+    string clientPlatform=7;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

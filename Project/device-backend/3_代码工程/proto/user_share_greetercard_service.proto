@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.greeter.share";
+option java_outer_classname = "UserShareGreeterCardServiceProto";
+
+package user.greeter.share;
+
+//用户分享贺卡服务类
+service UserShareGreeterCardService {
+    //分享贺卡
+    rpc share(UserShareGreeterCardInfo) returns (Result){}
+}
+
+//用户分享贺卡信息
+message UserShareGreeterCardInfo{
+    string mobile = 1; //手机号码-选填
+    string greeterCardId = 2; //贺卡ID - 必填
+    string greeterCardInfo = 3; //贺卡信息 -选填
+    string greeterCardLink = 4; //贺卡链接 - 选填
+    string nickName = 5;//昵称-选填
+    string wxID = 6;//微信ID-选填
+    string token = 7;//安全校验码-必填
+    string clientPlatform=8;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+    int64 shareTime = 9; //分享时间-必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

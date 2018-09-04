@@ -1,0 +1,5 @@
+﻿/*!
+ * HB App - 404,500 Css
+ * @Author Gang
+ * @Latest Update 2017-06-19 18:00
+ */body,html{overflow-x:hidden;height:100%}html{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-tap-highlight-color:transparent}*{margin:0;padding:0}*,:after,:before{box-sizing:inherit}.page{padding-top:2.03rem}.page .pic1{margin:auto;background-repeat:no-repeat;background-size:100%;width:2.12rem;height:2.23rem;background-image:url(../images/error_pic.png)}.page .text{padding-top:.41rem;text-align:center;font-size:.3rem;color:#686868}

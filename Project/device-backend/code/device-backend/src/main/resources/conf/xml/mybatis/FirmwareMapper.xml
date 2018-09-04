@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="core.mapper.FirmwareMapper">
+
+	<select id="listFirmwareName" resultType="FirmwareName">
+		select
+		ipk_name_id as
+		firmwareNameId,ipk_name as firmwareName,ipk_nickname as nickName from
+		t_ipk_name a where a.type=1 order by
+		a.ipk_nickname
+	</select>
+
+	<!--查询用户总数 -->
+	<select id="checkExit" resultType="Integer" parameterType="Firmware">
+		select count(t.firmware_id) from
+		t_firmware t WHERE firmware_name_id =
+		#{firmwareNameId}
+		and
+		firmware_VERSION = #{version} and model = #{model}
+	</select>
+
+	<!--保存固件信息 -->
+	<insert id="saveFirmware" parameterType="Firmware">
+		insert into
+		t_firmware(firmware_name_id,model,firmware_VERSION,firmware_DESC,firmware_path,user_id,ADDTIME,status,firmware_md5)
+		values(
+		#{firmwareNameId},
+		#{model},
+		#{version},
+		#{firmwareDesc},
+		#{firmwarePath},
+		#{user_id},
+		#{addTime},
+		#{status},
+		#{firmware_md5}
+		)
+	</insert>
+
+	<!--分页查询固件信息 -->
+	<select id="listFirmware" resultType="Firmware" parameterType="java.util.Map">
+		select
+		firmware_id as firmwareId ,i.firmware_name_id as
+		firmwareNameId,n.ipk_name as
+		firmwareName,n.ipk_nickname as
+		nickName,model ,firmware_VERSION as
+		version,firmware_DESC as
+		firmwareDesc,firmware_path as
+		firmwarePath,i.user_id,a.user_name,ADDTIME,i.STATUS
+		from t_firmware i
+		LEFT JOIN t_ipk_name n ON i.firmware_name_id = n.ipk_name_id LEFT JOIN
+		t_admin_user a ON
+		i.user_id = a.user_id
+		<where>
+			<if test="firmwareName != null and firmwareName != ''">
+				and n.ipk_name = #{firmwareName}
+			</if>
+			<if test="nickName != null and nickName != ''">
+				and n.ipk_nickname = #{nickName}
+			</if>
+			<if test="model != null and model != ''">
+				and i.model = #{model}
+			</if>
+			<if test="version != null and version != ''">
+				and i.firmware_VERSION = #{version}
+			</if>
+			<if test="addTime != null ">
+				and date(i.ADDTIME) = date(#{addTime,jdbcType=TIMESTAMP})
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and i.STATUS = #{status}
+			</if>
+		</where>
+		order by i.ADDTIME DESC limit ${start} , ${pageSize}
+	</select>
+
+	<select id="selectFirmwareCount" resultType="Integer">
+		select count(i.firmware_id)
+		from t_firmware i LEFT JOIN t_ipk_name n ON
+		i.firmware_name_id = n.ipk_name_id
+		<where>
+			<if test="firmwareName != null and firmwareName != ''">
+				and n.ipk_name = #{firmwareName}
+			</if>
+			<if test="nickName != null and nickName != ''">
+				and n.ipk_nickname = #{nickName}
+			</if>
+			<if test="model != null and model != ''">
+				and i.model = #{model}
+			</if>
+			<if test="version != null and version != ''">
+				and i.firmware_VERSION = #{version}
+			</if>
+			<if test="addTime != null ">
+				and date(i.ADDTIME) = date(#{addTime,jdbcType=TIMESTAMP})
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and i.STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<!--根据ID获取固件 -->
+	<select id="selectFirmwareById" resultType="Firmware"
+		parameterType="java.lang.Integer">
+		SELECT firmware_id AS firmwareId ,model,firmware_VERSION
+		AS VERSION,firmware_path AS
+		firmwarePath,firmware_md5 AS firmware_md5
+		FROM t_firmware a WHERE firmware_id=#{firmwareId}
+	</select>
+
+
+	<!--删除固件 -->
+	<delete id="deleteFirmware" parameterType="java.lang.Integer">
+		delete from t_firmware
+		where
+		firmware_id=#{firmwareId}
+	</delete>
+
+	<!-- 某个固件的所有版本 -->
+	<select id="queryVersion" resultType="java.lang.String"
+		parameterType="java.lang.Integer">
+		select
+		distinct firmware_VERSION
+		from t_firmware i where
+		i.firmware_name_id=#{firmwareNameId} and i.status = 1
+	</select>
+
+	<!--分页查询某个固件的设备列表 -->
+	<select id="listDev" resultType="Device" parameterType="java.util.Map">
+		SELECT
+		t.dev_id AS id,t.dev_number AS number,t.dev_model AS
+		model,t.belong_unit_id AS belongUnitId,t.product_time AS
+		productTtime,t.mac,t.add_time AS ADDTIME,t.tag,t.bind_account AS
+		bindAccount,t.bind_time AS bindTime,t.is_onlined AS isOnlined FROM
+		t_device t
+		<where>
+			<if test="firmwareNameId != null and firmwareNameId != ''">
+				and t.dev_model
+				in (SELECT DISTINCT model FROM t_firmware
+				i
+				WHERE i.firmware_name_id =
+				#{firmwareNameId} AND i.firmware_VERSION
+				= #{version})
+			</if>
+			<if test="dev_model != null and dev_model != ''">
+				and t.dev_model = #{dev_model}
+			</if>
+			<if test="belongUnitId != null">
+				and t.belong_unit_id = #{belongUnitId}
+			</if>
+			<if test="isOnlined != null">
+				and t.is_onlined = #{isOnlined}
+			</if>
+			<if test="isBind == 0">
+				and (t.bind_account = "" or t.bind_account is null)
+			</if>
+			<if test="isBind == 1">
+				and t.bind_account != ""
+			</if>
+		</where>
+		and tag=1 ORDER BY t.dev_number
+		DESC LIMIT ${start} , ${pageSize}
+	</select>
+
+	<select id="selectDevCount" resultType="Integer">
+		SELECT count(t.dev_id)
+		FROM `t_device` t
+		<where>
+			<if test="firmwareNameId != null and firmwareNameId != ''">
+				and t.dev_model
+				in (SELECT DISTINCT model FROM t_firmware
+				i
+				WHERE i.firmware_name_id =
+				#{firmwareNameId} AND i.firmware_VERSION
+				= #{version})
+			</if>
+			<if test="dev_model != null and dev_model != ''">
+				and t.dev_model = #{dev_model}
+			</if>
+			<if test="belongUnitId != null">
+				and t.belong_unit_id = #{belongUnitId}
+			</if>
+			<if test="isOnlined != null">
+				and t.is_onlined = #{isOnlined}
+			</if>
+			<if test="isBind == 0">
+				and (t.bind_account = "" or t.bind_account is null)
+			</if>
+			<if test="isBind == 1">
+				and t.bind_account != ""
+			</if>
+		</where>
+		and tag=1
+	</select>
+
+	<!--根据设备编号获取对应固件 -->
+	<select id="selectFirmwareByDevNum" resultType="Firmware"
+		parameterType="java.util.Map">
+		SELECT firmware_id AS firmwareId ,model,firmware_VERSION
+		AS VERSION,firmware_path AS
+		firmwarePath,firmware_md5 AS firmware_md5
+		FROM (SELECT * FROM `t_firmware` i WHERE
+		i.firmware_name_id =
+		#{firmwareNameId} AND i.firmware_VERSION =#{version} AND STATUS=
+		1 ) i
+		RIGHT JOIN (SELECT d.dev_model FROM `t_device` d WHERE
+		dev_number
+		=
+		#{devNum})d ON i.model = d.dev_model
+	</select>
+
+	<!--根据设备编号获取对应固件 -->
+	<select id="selectFirmwareByDevId" resultType="Firmware"
+		parameterType="java.util.Map">
+		SELECT firmware_id AS firmwareId ,model,firmware_VERSION
+		AS VERSION,firmware_path AS
+		firmwarePath,firmware_md5 AS
+		firmware_md5,dev_number AS devNum FROM (SELECT * FROM
+		`t_firmware` i
+		WHERE i.firmware_name_id = #{firmwareNameId} AND i.firmware_VERSION =
+		#{version} AND STATUS= 1 ) i RIGHT JOIN (SELECT
+		d.dev_model,d.dev_number FROM
+		`t_device` d WHERE dev_id = #{devNum})d
+		ON i.model = d.dev_model
+	</select>
+
+
+	<!--新增固件任务 -->
+	<insert id="addFirmwareTask" parameterType="FirmwareTask"
+		useGeneratedKeys="true" keyProperty="firmwareTaskId">
+		insert into
+		t_firmwaretask(task_name,task_desc,firmware_name_id,firmware_VERSION,add_time,user_id,dev_total,status)
+		VALUES(#{taskName},#{taskDesc},#{firmwareNameId},#{version},#{addTime},#{user_id},#{devTotal},0)
+	</insert>
+
+	<!--查询某个固件刷选的所有设备 -->
+	<select id="AllDev" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		SELECT
+		t.dev_id FROM
+		t_device t
+		<where>
+			<if test="firmwareNameId != null and firmwareNameId != ''">
+				and t.dev_model
+				= (SELECT DISTINCT model FROM t_firmware i
+				WHERE i.firmware_name_id =
+				#{firmwareNameId} AND i.firmware_VERSION =
+				#{version})
+			</if>
+			<if test="dev_model != null and dev_model != ''">
+				and t.dev_model = #{dev_model}
+			</if>
+			<if test="belongUnitId != null">
+				and t.belong_unit_id = #{belongUnitId}
+			</if>
+			<if test="isOnlined != null">
+				and t.is_onlined = #{isOnlined}
+			</if>
+			<if test="isBind == 0">
+				and (t.bind_account = "" or t.bind_account is null)
+			</if>
+			<if test="isBind == 1">
+				and t.bind_account != ""
+			</if>
+		</where>
+		and tag=1
+	</select>
+
+
+	<!--根据插件名ID获取插件名 -->
+	<select id="getIpkNameByID" resultType="java.lang.String"
+		parameterType="java.lang.Integer">
+		SELECT ipk_name AS ipkName FROM t_ipk_name a WHERE
+		ipk_name_id=#{ipkNameId}
+	</select>
+
+	<update id="updateCompleteDev">
+		UPDATE t_firmwaretask i SET completed_num = (SELECT
+		COUNT(it.firmwaretask_id) FROM t_firmwaretask_task it LEFT JOIN t_task
+		t ON
+		it.task_id = t.task_id WHERE it.firmwaretask_id =
+		i.firmwaretask_id AND STATUS =
+		0);
+		UPDATE t_firmwaretask i set i.status
+		= 1 where i.completed_num =
+		i.dev_total
+	</update>
+
+
+	<!--分页查询固件任务信息 -->
+	<select id="listFirmwareTask" resultType="FirmwareTask"
+		parameterType="java.util.Map">
+		SELECT firmwaretask_id AS firmwareTaskId ,i.task_name AS
+		taskName,task_desc AS
+		taskDesc,ipk_name AS firmwareName,ipk_nickname AS
+		nickName,firmware_VERSION AS VERSION,add_time AS ADDTIME,user_name AS
+		user_name,dev_total AS devTotal,completed_num AS completedNum,i.status
+		AS STATUS FROM (`t_firmwaretask` i LEFT JOIN t_ipk_name n ON
+		i.firmware_name_id = n.ipk_name_id) LEFT JOIN t_admin_user a ON
+		i.user_id =
+		a.user_id
+		<where>
+			<if test="taskName != null and taskName != ''">
+				and i.task_name = #{taskName}
+			</if>
+			<if test="firmwareName != null and firmwareName != ''">
+				and n.ipk_name = #{firmwareName}
+			</if>
+			<if test="nickName != null and nickName != ''">
+				and n.ipk_nickname = #{nickName}
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and i.STATUS = #{status}
+			</if>
+		</where>
+		order by i.add_time DESC limit ${start} , ${pageSize}
+	</select>
+
+	<select id="selectFirmwareTaskCount" resultType="Integer">
+		select count(i.firmwaretask_id) from (`t_firmwaretask` i LEFT JOIN
+		t_ipk_name n
+		ON i.firmware_name_id = n.ipk_name_id) LEFT JOIN
+		t_admin_user a ON
+		i.user_id = a.user_id
+		<where>
+			<if test="taskName != null and taskName != ''">
+				and i.task_name = #{taskName}
+			</if>
+			<if test="firmwareName != null and firmwareName != ''">
+				and n.ipk_name = #{firmwareName}
+			</if>
+			<if test="nickName != null and nickName != ''">
+				and n.ipk_nickname = #{nickName}
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and i.STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<!--查询固件任务信息 -->
+	<select id="queryFirmwareTaskById" resultType="FirmwareTask"
+		parameterType="java.lang.Integer">
+		SELECT firmwaretask_id AS firmwareTaskId ,i.task_name AS
+		taskName,task_desc AS
+		taskDesc,ipk_name AS firmwareName,ipk_nickname AS
+		nickName,firmware_VERSION AS VERSION,add_time AS ADDTIME,user_name
+		AS
+		user_name,dev_total AS devTotal,completed_num AS
+		completedNum,i.status
+		AS STATUS FROM (`t_firmwaretask` i LEFT JOIN
+		t_ipk_name n ON
+		i.firmware_name_id = n.ipk_name_id) LEFT JOIN
+		t_admin_user a ON
+		i.user_id =
+		a.user_id where i.firmwaretask_id =
+		#{firmwareTaskId}
+	</select>
+
+
+	<!--分页查询设备完成任务详情 -->
+	<select id="listDevTaskDetail" resultType="DevTaskDetail"
+		parameterType="java.util.Map">
+		SELECT de.dev_id AS devId,de.dev_number AS
+		number,de.dev_model AS
+		model,n.online_status AS onlineStatus,d.status
+		AS STATUS FROM ((SELECT
+		* FROM t_firmwaretask_task WHERE
+		firmwaretask_id = #{firmwareTaskId})t
+		LEFT JOIN t_task d ON
+		t.task_id =
+		d.task_id ) LEFT JOIN t_device de ON
+		d.dev_num = de.dev_number
+		LEFT JOIN
+		t_dev_online n ON d.dev_num =
+		n.dev_number ORDER BY
+		n.dev_number DESC
+		LIMIT ${start} ,${pageSize}
+	</select>
+
+
+	<select id="selectDevTaskDetailCount" resultType="Integer"
+		parameterType="java.lang.Integer">
+		SELECT COUNT(t.firmwaretask_id) FROM
+		`t_firmwaretask_task` t WHERE
+		t.firmwaretask_id = #{firmwareTaskId}
+	</select>
+
+</mapper>

@@ -1,0 +1,4 @@
+/code/device-backend/src/main/resources/conf/properties/ merge=ours
+/code/device-comm/src/main/resources/application.properties merge=ours
+/code/device-comm/src/main/resources/application.yml merge=ours
+

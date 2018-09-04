@@ -1,0 +1,22 @@
+{
+	"code": 0,
+	"msg": "",
+	"total": 200,
+	"data": [
+		{
+			"firmwareNameId": 1,
+			"firmwareName": "固件名称1",
+			"nickName": "固件名称 nickName"
+		},
+		{
+			"firmwareNameId": 2,
+			"firmwareName": "固件名称1",
+			"nickName": "固件名称 nickName"
+		},
+		{
+			"firmwareNameId": 3,
+			"firmwareName": "固件名称1",
+			"nickName": "固件名称 nickName"
+		}
+	]
+}

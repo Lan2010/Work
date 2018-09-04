@@ -1,0 +1,177 @@
+﻿
+<div class="toolbar">
+	<div class="action full back">
+		<a href="javascript: window.history.back();" class="btn m"><i class="fa fa-arrow-left"></i></a>
+	</div>
+	<div class="title">插件任务详情</div>
+
+</div>
+
+
+<div class="panel-wrap">
+	
+	<!-- Device info -->
+	<div class="panel panel-form2 panel-task-add">	
+		<!-- <div class="panel-header">
+			<div class="title">设备信息</div>
+		</div> -->
+
+		<div class="panel-body">
+
+			<form id="formDetl">
+
+			<div class="cells cells-form flex flex-wrap" id="detlBody">
+				
+				<div class="cell-title"><span>任务配置</span></div>
+
+				<div class="cell col-6">
+					<div class="hd"><label>任务名称</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="taskName" class="input input-read"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell col-6">
+					<div class="hd"><label>添加者</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="user_name" class="input input-read"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell col-6">
+					<div class="hd"><label>更新类型</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="operateType" class="input input-read"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell col-6">
+					<div class="hd"><label>添加时间</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="addTime" class="input input-read"></span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="cell col-6">
+					<div class="hd"><label>插　　件</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="ipkNickName" class="input input-read"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell col-6">
+					<div class="hd"><label>版　　本</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="version" class="input input-read"></span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-12 hide" id="divAppend">
+					<div class="cell col-6">
+						<div class="hd"><label>升级方式</label></div>
+						<div class="bd">
+							<div class="control">
+								<span name="append" class="input input-read"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- <div class="cell col-6 hide" id="append">
+					<div class="hd"><label>自定义选项</label></div>
+					<div class="bd">
+						<div class="control">
+							<label class="checkbox-inline" title="忽略依赖，不检查插件依赖关系"><input name="append" type="checkbox" data-sep=" " value="--force-depends" checked=""><i></i><span>depends</span></label>
+							<label class="checkbox-inline" title="重装，不检查是否是低版本或者平行版本"><input name="append" type="checkbox" data-sep=" " value="--force-reinstall" checked=""><i></i><span>reinstall</span></label>
+							<label class="checkbox-inline" title="配置文件覆盖，允许覆盖掉配置区其他插件的配置文件"><input name="append" type="checkbox" data-sep=" " value="--force-overwrite
+"><i></i><span>overwrite</span></label>
+						</div>
+					</div>
+				</div> -->
+
+				<div class="cell col-6">
+					<div class="hd"><label>任务状态</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="status" class="input input-read"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell col-6">
+					<div class="hd"><label>进　　度</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="devTotal" class="input input-read"></span>
+						</div>
+					</div>
+				</div>	
+
+				<div class="col-12">
+					<div class="cell">
+						<div class="hd"><label>任务描述</label></div>
+						<div class="bd">
+							<div class="control">
+								<span name="taskDesc" class="input input-read"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+			</form>
+
+			<div class="cells cells-form flex flex-wrap">
+
+				<div class="cell-title"><span>所选设备</span></div>
+
+				<div class="cell">
+					<div class="hd"><label>设备列表</label></div>
+					<div class="bd">
+
+						<div class="control">
+							
+							<div class="task-dev-list">
+								
+								<table id="devTable" class="table">
+									<thead>
+								        <tr>
+								        	<th class="th-sn">序号</th>
+								            <th>设备编号</th>
+								            <th>型号</th>
+								            <th class="txt-c">是否在线</th>
+								            <th>状态</th>
+								        </tr>
+							        </thead>
+							    </table>
+							    <div data-grid="devTable" data-total data-go data-jump></div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+				
+
+			</div>
+		</div>
+
+		<div class="panel-footer" id="devBtn">
+			<button type="button" class="btn m default" onclick="javascript: window.history.back();">返回</button>
+		</div>
+	</div>
+
+</div>

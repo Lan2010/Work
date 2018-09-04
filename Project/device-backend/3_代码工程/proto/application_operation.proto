@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.pages.app.operation";
+option java_outer_classname = "ApplicationOperationServiceProto";
+
+package app.operation;
+
+//app 操作服务类
+service ApplicationOperationService {
+    //app 启动API
+    rpc appStart(ApplicationStartInfo) returns (Result){}
+    //app shutdown API
+    rpc appShutdown(ApplicationShutdownInfo) returns (Result){}
+}
+
+//app 启动信息
+message ApplicationStartInfo{
+    string mobile = 1; //手机号码-选填
+    string wxID = 2; //微信ID-选填
+    int64 startTime = 3; //启动时间-必填
+    string token = 4;//安全校验码-必填
+    string clientPlatform=5;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+    string ip = 6; //IP - 必填
+}
+
+//app shutdown信息
+message ApplicationShutdownInfo{
+    string mobile = 1; //手机号码-选填
+    string wxID = 2; //微信ID-选填
+    int64 shutdownTime = 3; //关机时间-必填
+    string token = 4;//安全校验码-必填
+    string clientPlatform=5;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+    string ip = 6; //IP - 必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

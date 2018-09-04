@@ -1,0 +1,103 @@
+#mqtt配置
+com:
+  mqtt:
+    #开发服务器
+    #url: ssl://192.168.11.11:8883
+    #开发服务器
+    url: ssl://192.168.11.21:8883
+    #线上服务器（个人）
+    #url: ssl://mqtt.arvik.top:8884
+    #远程测试服务器
+    #url: tcp://192.168.92.33:8883
+    #设备上下线
+    #url: tcp://127.0.0.1:1883
+    #topics: test,hello
+    topics: s/report/+/rctl/#
+    clientId: comm_pub_test1,comm_sub_test1
+    username: arvik
+    password: 123456
+    timeout: 60
+    keepalive: 60
+    keystorePass: 123456
+    #本地开发
+    #keystorePath: D:/keystore/arvik.keystore
+    #开发服务器
+    keystorePath: /home/ca/mqtt.keystore
+    
+#druid配置
+spring:
+   datasource:
+      #开发
+      url: jdbc:mysql://192.168.11.11:3306/device-backend?useSSL=true&serverTimezone=Asia/Shanghai
+      #测试
+      #url: jdbc:mysql://192.168.92.27:3306/device-backend?useSSL=true&serverTimezone=Asia/Shanghai
+      username: developer
+      password: developer@100msh
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+      #下面为连接池的补充设置，应用到上面所有数据源中初始化大小，最小，最大
+      initialSize: 1
+      minIdle: 3
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 30000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,slf4j
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 合并多个DruidDataSource的监控数据
+      useGlobalDataSourceStat: true
+      
+
+#mybatis配置
+mybatis:
+   typeAliasesPackage: com.tianzhixing.devicecomm.pojo
+   mapperLocations: classpath:mapper/*.xml
+   
+#cassandra 配置
+cassandra:
+   org:
+      #开发
+      url: 192.168.11.15
+      #测试
+      #url: 192.168.92.32
+      port: 9042
+      keyspace: devicecomm
+      username: 
+      password: 
+      
+#配置redis
+redis:
+   io:
+      #开发
+      ip: 192.168.11.11
+      password: sky!@#123
+      #测试
+      #ip: 192.168.92.28
+      #password: 
+      prot: 6379
+      maxTotal: 1024
+      maxIdle: 200
+      maxWaitMillis: 50000
+      timeOut: 50000
+      testOnBorrow: true
+   
+#nats消息队列
+io: 
+   nats: 
+      client: 
+         url: nats://192.168.11.18:4222
+
+
+       

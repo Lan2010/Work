@@ -1,0 +1,202 @@
+﻿
+<div class="toolbar">
+	<div class="action full back">
+		<a href="javascript: window.history.back();" class="btn m"><i class="fa fa-arrow-left"></i></a>
+	</div>
+	<div class="title">新建固件更新任务</div>
+
+</div>
+
+
+<div class="panel-wrap">
+	
+	<!-- Device info -->
+	<div class="panel panel-form2 panel-task-add">	
+		<!-- <div class="panel-header">
+			<div class="title">设备信息</div>
+		</div> -->
+
+		<div class="panel-body">
+
+			<form id="formAdd">
+
+			<div class="cells cells-form flex flex-wrap">
+				
+				<div class="cell-title"><span>任务配置</span></div>
+
+				<div class="col-12">
+					<div class="cell col-6">
+						<div class="hd required"><label>任务名称</label></div>
+						<div class="bd">
+							<div class="control">
+								<input name="taskName" type="text" class="input" required />
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="cell col-6">
+					<div class="hd required"><label>更新固件</label></div>
+					<div class="bd">
+						<div class="control">
+							<select id="firmwareNameId" name="firmwareNameId" class="input" data-text="请选择固件" required></select>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell col-6">
+					<div class="hd required"><label>更新版本</label></div>
+					<div class="bd">
+						<div class="control">
+							<select id="version" name="version" class="input" data-emptytext="请先选择固件" required></select>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-12">
+					<div class="cell">
+						<div class="hd"><label>任务描述</label></div>
+						<div class="bd">
+							<div class="control">
+								<textarea name="taskDesc" class="input" placeholder="任务描述或备注"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+			</form>
+
+			<div class="cells cells-form flex flex-wrap">
+
+				<div class="cell-title"><span>选择设备</span></div>
+
+				<div class="cell">
+					<div class="hd"><label>选择方式</label></div>
+					<div class="bd">
+						<div class="control" id="selectType">
+							<label class="radio-inline s2"><input name="addType" type="radio" value="0" checked=""><span>输入设备编号</span></label>
+							<label class="radio-inline s2"><input name="addType" type="radio" value="1" ><span>搜索设备</span></label>
+						</div>
+						<div class="control">
+							
+							<div class="task-dev-select">
+								<div class="task-dev-input" id="taskDevInput">
+									<textarea id="devs" name="devNums" class="input" placeholder="请输入设备编号，多个请用逗号、空格或换行隔开。  设备编号格式： 14位 0-9 a-z"></textarea>
+
+									<div class="alert alert-warning hide" id="taskError">
+										<button class="close">×</button>
+										<h4><i class="fa fa-warning"></i>请检查输入的设备</h4>
+
+										<div class="task-dev-error">
+											<ul>
+												<li class="hide" id="notexist">
+													<div class="title">不存在的设备：</div>
+													<div class="info"></div>
+												</li>
+												<li class="hide" id="notmatch">
+													<div class="title">设备型号不匹配此插件：</div>
+													<div class="info"></div>
+												</li>
+											</ul>
+										</div>
+
+									</div>
+								</div>
+								
+								<div class="task-dev hide" id="taskDev">
+
+									<form id="formSearch">
+										<input type="hidden" name="firmwareNameId" id="s_firmwareNameId">
+										<input type="hidden" name="version" id="s_version">
+										<div class="task-dev-search">
+											<div class="cells">
+												<div class="cell col-3">
+													<div class="hd"><label>设备型号</label></div>
+													<div class="bd">
+														<select id="model" name="model" class="input" data-text="不限"></select>
+													</div>
+												</div>
+												<div class="cell col-3">
+													<div class="hd"><label>所属单位</label></div>
+													<div class="bd">
+														<select id="belongUnitId" name="belongUnitId" class="input">
+															<option value="">不限</option>
+															<option value="1">天智星</option>
+															<option value="0">未知</option>
+														</select>
+													</div>
+												</div>
+												<div class="cell col-3">
+													<div class="hd"><label>绑定状态</label></div>
+													<div class="bd">
+														<select name="isBind" class="input">
+															<option value="">不限</option>
+															<option value="1">绑定</option>
+															<option value="0">未绑定</option>
+														</select>
+													</div>
+												</div>
+												<div class="cell col-3">
+													<div class="hd"><label>是否上过线</label></div>
+													<div class="bd">
+														<select name="isOnlined" class="input">
+															<option value="">不限</option>
+															<option value="1">是</option>
+															<option value="0">否</option>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+											
+										<div class="task-dev-action">
+											<div class="multi">
+												<label class="checkbox-inline" ><input id="tableCheckType" name="selectType" type="checkbox" value="1" checked="" disabled><i></i><span>全选 / 反选 （所有数据）</span></label>
+											</div>
+											<div class="btn-area">
+												<button type="submit" class="btn blue">搜索</button>
+												<button type="button" class="btn default" data-btn="clear">清除</button>
+											</div>
+										</div>
+
+									</form>
+
+									<div class="task-dev-list">
+										
+										<table id="devTable" class="table">
+											<thead>
+										        <tr>
+										        	<th class="th-sn">序号</th>
+										            <th>设备编号</th>
+										            <th>型号</th>
+										            <th>星链账号</th>
+										            <th class="txt-c">是否上过线</th>
+										            <th>归属</th>
+										        </tr>
+									        </thead>
+									    </table>
+									    <div data-grid="devTable" data-total data-go data-jump>
+									    	<div class="task-dev-total">已选设备：<span id="selectedTotal">0</span></div>
+									    </div>
+
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				
+
+			</div>
+		</div>
+
+		<div class="panel-footer" id="devBtn">
+			<button type="button" class="btn m blue" id="btnSubmit">提交</button>
+			<button type="button" class="btn m default" onclick="javascript: window.history.back();">取消</button>
+		</div>
+	</div>
+
+</div>

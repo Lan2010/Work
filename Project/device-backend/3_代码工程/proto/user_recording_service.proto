@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.recording";
+option java_outer_classname = "UserRecordingServiceProto";
+
+package user.recording;
+
+//用户录音服务类
+service UserRecordingService {
+    //录音
+    rpc recording(UserRecordingInfo) returns (Result){}
+}
+
+//用户录音信息
+message UserRecordingInfo{
+    string mobile = 1; //手机号码-必填
+    string voiceId = 2; //声音ID - 必填
+    string voiceLink = 4; //声音链接 - 选填
+    string nickName = 5;//昵称-选填
+    string wxID = 6;//微信ID-选填
+    string token = 7;//安全校验码-必填
+    string clientPlatform=8;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+    int64 recordingTime = 9; //录制时间-必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

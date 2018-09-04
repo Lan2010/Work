@@ -1,0 +1,90 @@
+﻿
+<div class="toolbar">
+	
+	<div class="title"><i class="fa fa-code"></i>脚本上传列表</div>
+
+	<div class="action">
+		<a href="#shell/add" id="btnAdd" class="btn m"><i class="fa fa-plus"></i> <span>上传新脚本</span></a>
+		<!-- <a href="javascript:void(0);" class="btn m disabled" id="tBtnDelete"><i class="fa fa-trash-o"></i> <span>删除</span></a> -->
+	</div>
+	
+	<!-- Table page -->
+	<div data-grid="mainTable" data-jump class="toolbar-page"></div>
+	<!-- Table page -->
+
+	<div class="search" id="tSearch">
+		<form id="tFormSearch">
+			<div class="search-input">
+				<div class="keyword">
+					<input data-name="keyword" name="shellName" type="text"  placeholder="脚本名称" />
+				</div>
+				<div class="btn-search">
+					<button type="submit" class="btn"><i class="fa fa-search"></i></button>
+				</div>
+				<div class="clear hide" title="清除"><i class="fa fa-close"></i></div>
+			</div>
+			<div class="adv">
+				<span data-toggle="filter" class="btn default">过滤 <i class="fa"></i></span>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="filter" id="tFilter">
+	<!-- <div class="arrow"></div> -->
+	<div class="inner">
+		<form id="tFormFilter">
+		<div class="cells cells-search">
+			
+			<div class="cell">
+				<div class="hd"><label>添加者</label></div>
+				<div class="bd"><input name="user_name" type="text" class="input" maxlength="20"></div>
+			</div>
+
+			<div class="cell">
+				<div class="hd"><label>添加时间</label></div>
+				<div class="bd"><input id="addTime" name="addTime" type="text" class="input" readonly=""></div>
+			</div>
+
+			<div class="cell">
+				<div class="hd"><label>状态</label></div>
+				<div class="bd">
+					<select name="status" class="input">
+						<option value="">不限</option>
+						<option value="1">正常</option>
+						<option value="0">失效</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="btn-area">
+				<button type="submit" class="btn blue">过滤</button>
+				<button type="button" class="btn default" data-btn="clear">清除</button>
+			</div>
+		</div>
+		
+		</form>
+	</div>
+</div>
+
+<div class="">
+	
+	<div class="main-table">
+		<table id="mainTable" class="table">
+			<thead>
+		        <tr>
+		        	<!-- <th class="th-multiCheck"><span class="checkbox-inline"><input type="checkbox"/><i></i></span></th> -->
+		        	<th class="th-sn">序号</th>
+		            <th>脚本名称</th>
+		            <th>脚本描述</th>
+		            <th>添加时间</th>
+		            <th>添加者</th>
+		            <th>状态</th>
+		            <th class="txt-c">操作</th>
+		        </tr>
+	        </thead>
+	    </table>
+	    <div data-grid="mainTable" data-total data-go data-jump></div>
+	</div>
+
+</div>

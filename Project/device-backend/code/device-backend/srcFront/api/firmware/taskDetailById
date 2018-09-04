@@ -1,0 +1,16 @@
+{
+	"code": 0,
+	"msg": "",
+	"data": {
+		"taskId": 1,
+		"taskName": "Mission 1",
+		"taskDesc": "a",
+		"shellId": "",
+		"shellName": "22",
+		"addTime": "345435435345",
+		"user_name": "xiaoming",
+		"status": 1,
+		"devTotal": 1000,
+		"completedNum": 500
+	}
+}

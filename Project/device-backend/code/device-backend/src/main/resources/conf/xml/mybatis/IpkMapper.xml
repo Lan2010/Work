@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="core.mapper.IpkMapper">
+	<!--分页查询插件信息 -->
+	<select id="listIpkName" resultType="IpkName">
+		select
+		ipk_name_id as
+		ipkNameId,ipk_name as ipkName,ipk_nickname as ipkNickName from
+		t_ipk_name a where a.type=0 order by
+		a.ipk_nickname
+	</select>
+
+	<!--查询用户总数 -->
+	<select id="checkExit" resultType="Integer" parameterType="Ipk">
+		select count(t.ipk_id) from
+		t_ipk t WHERE ipk_name_id = #{ipkNameId}
+		and
+		ipk_VERSION = #{version} and model = #{model}
+	</select>
+
+	<!--保存插件信息 -->
+	<insert id="saveIpk" parameterType="Ipk">
+		insert into
+		t_ipk(ipk_name_id,model,ipk_VERSION,ipk_DESC,ipk_path,user_id,ADDTIME,STATUS,ipk_md5)
+		values(
+		#{ipkNameId},
+		#{model},
+		#{version},
+		#{ipkDesc},
+		#{ipkPath},
+		#{user_id},
+		#{addTime},
+		#{status},
+		#{ipk_md5}
+		)
+	</insert>
+
+	<!--分页查询插件信息 -->
+	<select id="listIpk" resultType="Ipk" parameterType="java.util.Map">
+		select
+		ipk_id as ipkId ,i.ipk_name_id as ipkNameId,ipk_name as
+		ipkName,ipk_nickname as ipkNickName,model ,ipk_VERSION as
+		version,ipk_DESC as ipkDesc,ipk_path as
+		ipkPath,i.user_id,a.user_name,ADDTIME,i.STATUS
+		from t_ipk i LEFT JOIN
+		t_ipk_name n ON i.ipk_name_id = n.ipk_name_id LEFT JOIN t_admin_user a
+		ON
+		i.user_id = a.user_id
+		<where>
+			<if test="ipkName != null and ipkName != ''">
+				and n.ipk_name = #{ipkName}
+			</if>
+			<if test="ipkNickName != null and ipkNickName != ''">
+				and n.ipk_nickname = #{ipkNickName}
+			</if>
+			<if test="model != null and model != ''">
+				and i.model = #{model}
+			</if>
+			<if test="version != null and version != ''">
+				and i.ipk_VERSION = #{version}
+			</if>
+			<if test="addTime != null ">
+				and date(i.ADDTIME) = date(#{addTime,jdbcType=TIMESTAMP})
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and i.STATUS = #{status}
+			</if>
+		</where>
+		order by i.ADDTIME DESC limit ${start} , ${pageSize}
+	</select>
+
+	<select id="selectIpkCount" resultType="Integer">
+		select count(i.ipk_id)
+		from t_ipk i LEFT JOIN t_ipk_name n ON
+		i.ipk_name_id = n.ipk_name_id
+		<where>
+			<if test="ipkName != null and ipkName != ''">
+				and n.ipk_name = #{ipkName}
+			</if>
+			<if test="ipkNickName != null and ipkNickName != ''">
+				and n.ipk_nickname = #{ipkNickName}
+			</if>
+			<if test="model != null and model != ''">
+				and i.model = #{model}
+			</if>
+			<if test="version != null and version != ''">
+				and i.ipk_VERSION = #{version}
+			</if>
+			<if test="addTime != null ">
+				and date(i.ADDTIME) = date(#{addTime,jdbcType=TIMESTAMP})
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and i.STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<!--删除插件 -->
+	<delete id="deleteIpk" parameterType="java.lang.Integer">
+		delete from t_ipk where
+		ipk_id = #{ipkId}
+	</delete>
+
+	<!-- 某个插件的所有版本 -->
+	<select id="queryIpkVersion" resultType="java.lang.String"
+		parameterType="java.lang.Integer">
+		select
+		distinct ipk_VERSION
+		from t_ipk i where
+		i.ipk_name_id=#{ipkNameId} and i.status = 1
+	</select>
+
+	<!--分页查询某个插件的设备列表 -->
+	<select id="listDev" resultType="Device" parameterType="java.util.Map">
+		SELECT
+		t.dev_id AS id,t.dev_number AS number,t.dev_model AS
+		model,t.belong_unit_id AS belongUnitId,t.product_time AS
+		productTtime,t.mac,t.add_time AS ADDTIME,t.tag,t.bind_account AS
+		bindAccount,t.bind_time AS bindTime,t.is_onlined AS isOnlined FROM
+		t_device t
+		<where>
+			<if test="ipkNameId != null and ipkNameId != ''">
+				and t.dev_model
+				in (SELECT DISTINCT model FROM t_ipk i
+				WHERE i.ipk_name_id =
+				#{ipkNameId} AND i.ipk_VERSION = #{version})
+			</if>
+			<if test="dev_model != null and dev_model != ''">
+				and t.dev_model = #{dev_model}
+			</if>
+			<if test="belongUnitId != null">
+				and t.belong_unit_id = #{belongUnitId}
+			</if>
+			<if test="isOnlined != null">
+				and t.is_onlined = #{isOnlined}
+			</if>
+			<if test="isBind == 0">
+				and (t.bind_account = "" or t.bind_account is null)
+			</if>
+			<if test="isBind == 1">
+				and t.bind_account != ""
+			</if>
+		</where>
+		and tag=1 ORDER BY t.dev_number
+		DESC LIMIT ${start} , ${pageSize}
+	</select>
+
+	<select id="selectDevCount" resultType="Integer">
+		SELECT count(t.dev_id)
+		FROM `t_device` t
+		<where>
+			<if test="ipkNameId != null and ipkNameId != ''">
+				and t.dev_model
+				= (SELECT DISTINCT model FROM t_ipk i
+				WHERE i.ipk_name_id =
+				#{ipkNameId} AND i.ipk_VERSION = #{version})
+			</if>
+			<if test="dev_model != null and dev_model != ''">
+				and t.dev_model = #{dev_model}
+			</if>
+			<if test="belongUnitId != null">
+				and t.belong_unit_id = #{belongUnitId}
+			</if>
+			<if test="isOnlined != null">
+				and t.is_onlined = #{isOnlined}
+			</if>
+			<if test="isBind == 0">
+				and (t.bind_account = "" or t.bind_account is null)
+			</if>
+			<if test="isBind == 1">
+				and t.bind_account != ""
+			</if>
+		</where>
+		and tag=1
+	</select>
+
+	<!--卸载插件-分页查询某个插件的设备列表 -->
+	<select id="listDevByRemove" resultType="Device" parameterType="java.util.Map">
+		SELECT
+		t.dev_id AS id,t.dev_number AS number,t.dev_model AS
+		model,t.belong_unit_id AS belongUnitId,t.product_time AS
+		productTtime,t.mac,t.add_time AS ADDTIME,t.tag,t.bind_account AS
+		bindAccount,t.bind_time AS bindTime,t.is_onlined AS isOnlined FROM
+		t_device t
+		<where>
+			<if test="ipkNameId != null and ipkNameId != ''">
+				and dev_number in (SELECT dev_num FROM (SELECT
+				dev_num,operate FROM
+				(SELECT t4.task_id,dev_num,operate,start_time
+				FROM(SELECT task_id
+				FROM t_ipktask_task t1 LEFT JOIN t_ipktask t2 ON
+				t1.ipktask_id =
+				t2.ipktask_id WHERE t2.ipk_name_id =#{ipkNameId})t3
+				LEFT JOIN t_task
+				t4 ON
+				t3.task_id = t4.task_id WHERE t4.status=0 ORDER
+				BY start_time
+				DESC)
+				AS b WHERE NOT EXISTS(SELECT 1 FROM t_task WHERE
+				dev_num=
+				b.dev_num
+				AND b.start_time
+				&lt; start_time ) GROUP BY dev_num
+				) AS t WHERE
+				t.operate='installIpk' )
+			</if>
+			<if test="dev_model != null and dev_model != ''">
+				and t.dev_model = #{dev_model}
+			</if>
+			<if test="belongUnitId != null">
+				and t.belong_unit_id = #{belongUnitId}
+			</if>
+			<if test="isOnlined != null">
+				and t.is_onlined = #{isOnlined}
+			</if>
+			<if test="isBind == 0">
+				and (t.bind_account = "" or t.bind_account is null)
+			</if>
+			<if test="isBind == 1">
+				and t.bind_account != ""
+			</if>
+		</where>
+		and tag=1 ORDER BY t.dev_number
+		DESC LIMIT ${start} , ${pageSize}
+	</select>
+
+	<select id="selectDevCountByRemove" resultType="Integer">
+		SELECT count(t.dev_id)
+		FROM `t_device` t
+		<where>
+			dev_number in (SELECT dev_num FROM (SELECT dev_num,operate FROM
+			(SELECT t4.task_id,dev_num,operate,start_time FROM(SELECT task_id
+			FROM t_ipktask_task t1 LEFT JOIN t_ipktask t2 ON t1.ipktask_id =
+			t2.ipktask_id WHERE t2.ipk_name_id =#{ipkNameId})t3 LEFT JOIN t_task
+			t4 ON
+			t3.task_id = t4.task_id WHERE t4.status=0 ORDER BY start_time
+			DESC)
+			AS b WHERE NOT EXISTS(SELECT 1 FROM t_task WHERE dev_num=
+			b.dev_num
+			AND b.start_time &lt; start_time ) GROUP BY dev_num ) AS t
+			WHERE
+			t.operate='installIpk' )
+			<if test="dev_model != null and dev_model != ''">
+				and t.dev_model = #{dev_model}
+			</if>
+			<if test="belongUnitId != null">
+				and t.belong_unit_id = #{belongUnitId}
+			</if>
+			<if test="isOnlined != null">
+				and t.is_onlined = #{isOnlined}
+			</if>
+			<if test="isBind == 0">
+				and (t.bind_account = "" or t.bind_account is null)
+			</if>
+			<if test="isBind == 1">
+				and t.bind_account != ""
+			</if>
+		</where>
+		and tag=1
+	</select>
+
+	<!--新增插件任务 -->
+	<insert id="addIpkTask" parameterType="IpkTask"
+		useGeneratedKeys="true" keyProperty="ipkTaskId">
+		insert into
+		t_ipktask(task_name,task_desc,start_type,start_time,operate_type,ipk_name_id,ipk_VERSION,append,add_time,user_id,dev_total,status)
+		VALUES(#{taskName},#{taskDesc},#{startType},#{startTime},#{operateType},#{ipkNameId},#{version},#{append},#{addTime},#{user_id},#{devTotal},0)
+	</insert>
+
+	<!--查询某个插件刷选的所有设备 -->
+	<select id="AllDev" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		SELECT
+		t.dev_id FROM
+		t_device t
+		<where>
+			<if test="ipkNameId != null and ipkNameId != ''">
+				and t.dev_model
+				= (SELECT DISTINCT model FROM t_ipk i
+				WHERE i.ipk_name_id =
+				#{ipkNameId} AND i.ipk_VERSION = #{version})
+			</if>
+			<if test="dev_model != null and dev_model != ''">
+				and t.dev_model = #{dev_model}
+			</if>
+			<if test="belongUnitId != null">
+				and t.belong_unit_id = #{belongUnitId}
+			</if>
+			<if test="isOnlined != null">
+				and t.is_onlined = #{isOnlined}
+			</if>
+			<if test="isBind == 0">
+				and (t.bind_account = "" or t.bind_account is null)
+			</if>
+			<if test="isBind == 1">
+				and t.bind_account != ""
+			</if>
+		</where>
+		and tag=1
+	</select>
+
+
+	<!--卸载插件查询某个插件刷选的所有设备 -->
+	<select id="AllDevByRemove" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		SELECT
+		t.dev_id FROM
+		t_device t
+		<where>
+			dev_number in (SELECT dev_num FROM (SELECT dev_num,operate FROM
+			(SELECT t4.task_id,dev_num,operate,start_time FROM(SELECT task_id
+			FROM t_ipktask_task t1 LEFT JOIN t_ipktask t2 ON t1.ipktask_id =
+			t2.ipktask_id WHERE t2.ipk_name_id =#{ipkNameId})t3 LEFT JOIN t_task
+			t4 ON
+			t3.task_id = t4.task_id WHERE t4.status=0 ORDER BY start_time
+			DESC)
+			AS b WHERE NOT EXISTS(SELECT 1 FROM t_task WHERE dev_num=
+			b.dev_num
+			AND b.start_time &lt; start_time ) GROUP BY dev_num ) AS t
+			WHERE
+			t.operate='installIpk' )
+			<if test="dev_model != null and dev_model != ''">
+				and t.dev_model = #{dev_model}
+			</if>
+			<if test="belongUnitId != null">
+				and t.belong_unit_id = #{belongUnitId}
+			</if>
+			<if test="isOnlined != null">
+				and t.is_onlined = #{isOnlined}
+			</if>
+			<if test="isBind == 0">
+				and (t.bind_account = "" or t.bind_account is null)
+			</if>
+			<if test="isBind == 1">
+				and t.bind_account != ""
+			</if>
+		</where>
+		and tag=1
+	</select>
+
+	<!--根据设备编号获取对应ipk -->
+	<select id="selectIpkByDevNum" resultType="Ipk" parameterType="java.util.Map">
+		SELECT ipk_id AS ipkId ,model,ipk_VERSION AS VERSION,ipk_path AS
+		ipkPath,ipk_md5 AS ipk_md5 FROM (SELECT * FROM `t_ipk` i WHERE
+		i.ipk_name_id = #{ipkNameId} AND i.ipk_VERSION =#{version} AND STATUS=
+		1 ) i
+		RIGHT JOIN (SELECT d.dev_model FROM `t_device` d WHERE
+		dev_number
+		=
+		#{devNum})d ON i.model = d.dev_model
+	</select>
+
+	<!--根据设备编号获取对应ipk -->
+	<select id="selectIpkByDevId" resultType="Ipk" parameterType="java.util.Map">
+		SELECT ipk_id AS ipkId ,model,ipk_VERSION AS VERSION,ipk_path AS
+		ipkPath,ipk_md5 AS ipk_md5,dev_number AS devNum FROM (SELECT * FROM
+		`t_ipk` i WHERE i.ipk_name_id = #{ipkNameId} AND i.ipk_VERSION =
+		#{version} AND STATUS= 1 ) i RIGHT JOIN (SELECT
+		d.dev_model,d.dev_number FROM
+		`t_device` d WHERE dev_id = #{devNum})d
+		ON i.model = d.dev_model
+	</select>
+
+
+	<!--根据插件名ID获取插件名 -->
+	<select id="getIpkNameByID" resultType="java.lang.String"
+		parameterType="java.lang.Integer">
+		SELECT ipk_name AS ipkName FROM t_ipk_name a WHERE
+		ipk_name_id=#{ipkNameId}
+	</select>
+
+	<!--根据插件名ID获取插件 -->
+	<select id="selectIpkById" resultType="Ipk" parameterType="java.lang.Integer">
+		SELECT ipk_id AS ipkId ,model,ipk_VERSION AS VERSION,ipk_path AS
+		ipkPath,ipk_md5 AS ipk_md5 FROM t_ipk a WHERE ipk_id=#{ipkId}
+	</select>
+
+</mapper>

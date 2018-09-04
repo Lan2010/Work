@@ -1,0 +1,22 @@
+{
+	"code": 0,
+	"msg": "",
+	"data": {
+		"all": {
+			"total": 1000,
+			"onlined": 1000,
+			"unonlined": 1000
+		},
+		"unbound": {
+			"total": 1000,
+			"online": 1000,
+			"today": 1000,
+			"unonlined": 1000
+		},
+		"bind": {
+			"total": 1000,
+			"online": 1000,
+			"today": 1000
+		}
+	}
+}

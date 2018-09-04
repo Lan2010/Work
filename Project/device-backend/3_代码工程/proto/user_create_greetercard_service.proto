@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.greeter.create";
+option java_outer_classname = "UserCreateGreeterCardServiceProto";
+
+package user.greeter.create;
+
+//用户贺卡创建服务类
+service UserCreateGreeterCardService {
+    //用户贺卡创建
+    rpc create(UserCreateGreeterCardInfo) returns (Result){}
+}
+
+//用户贺卡创建信息
+message UserCreateGreeterCardInfo{
+    string mobile = 1; //手机号码-必填
+    string greeterCardId = 2; //贺卡ID - 必填
+    string greeterCardInfo = 3; //贺卡信息 -选填
+    string greeterCardLink = 4; //贺卡链接 - 选填
+    string nickName = 5;//昵称-选填
+    string wxID = 6;//微信ID-选填
+    string token = 7;//安全校验码-必填
+    string clientPlatform=8;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+    int64 createTime = 9; //创建时间-必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

@@ -1,0 +1,55 @@
+{
+	"code": 0,
+	"msg": "",
+	"total": 200,
+	"data": [
+		{
+			"firmwareTaskId": 1,
+			"taskName": "探针功能升级",
+			"taskDesc": "",
+			"operateType": 0,
+			"ipkNameId": "1",
+			"ipkName": "wifidog",
+			"ipkNickName": "无线模块插件",
+			"version": "v1.0.0",
+			"isForce": "1",
+			"addTime": 1529271212000,
+			"user_name": "xiaoming",
+			"devTotal": 1000,
+			"completedNum": 1000,
+			"status": 0
+		},
+		{
+			"firmwareTaskId": 1,
+			"taskName": "探针功能升级",
+			"taskDesc": "",
+			"operateType": 0,
+			"ipkNameId": "1",
+			"ipkName": "wifidog",
+			"ipkNickName": "无线模块插件",
+			"version": "v1.0.0",
+			"isForce": "1",
+			"addTime": 1529271212000,
+			"user_name": "xiaoming",
+			"devTotal": 1000,
+			"completedNum": 500,
+			"status": 0
+		},
+		{
+			"firmwareTaskId": 1,
+			"taskName": "探针功能升级",
+			"taskDesc": "",
+			"operateType": 0,
+			"ipkNameId": "1",
+			"ipkName": "wifidog",
+			"ipkNickName": "无线模块插件",
+			"version": "v1.0.0",
+			"isForce": "1",
+			"addTime": 1529271212000,
+			"user_name": "xiaoming",
+			"devTotal": 1000,
+			"completedNum": 50,
+			"status": 0
+		}
+	]
+}

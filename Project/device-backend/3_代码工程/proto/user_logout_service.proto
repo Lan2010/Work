@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.logout";
+option java_outer_classname = "UserLogoutServiceProto";
+
+package user.logout;
+
+//用户登出服务
+service UserLogoutService {
+    //用户登出
+    rpc logout(UserLogoutInfo) returns (Result){}
+}
+
+//用户登出信息
+message UserLogoutInfo{
+    string mobile = 1; //手机号码-必填
+    int64 logoutTime = 2; //登出时间-必填
+    string clientPlatform=3;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+    string token = 4;//安全校验码-必填
+    string wxID = 5;//微信ID-选填
+    string qqID = 6;//QQtID-选填
+    string sinaWeiBoID = 7;//新浪微博ID-选填
+    string ip = 8; //IP - 必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="core.mapper.IUserMapper">
+	<!-- 获取用户信息:通过账户名 -->
+	<select id="getAdminUserByName" parameterType="java.lang.String"
+		resultType="AdminUser">
+		select
+		user_id  ,user_name ,password,nick_name as nickname,cellphone as cell_phone,status,create_time,role_id,modify_time,remark
+		from
+		t_admin_user
+		where user_name = #{user_name}
+	</select>
+
+	<!-- 获取用户信息:通过ID -->
+	<select id="getAdminUserByID" parameterType="java.lang.Integer"
+		resultType="AdminUser">
+		select
+		user_id,user_name,password,nick_name as nickname,cellphone as cell_phone,status,create_time,role_id,modify_time,remark
+		from
+		t_admin_user
+		where user_id = #{user_id}
+	</select>
+
+	<insert id="insertAdminUser" parameterType="AdminUser">
+		insert into
+		t_admin_user(user_name,nick_name,password,cellphone,status,create_time,role_id,modify_time,remark)
+		values(
+		#{user_name},
+		#{nickname},
+		#{password},
+		#{cell_phone},
+		#{status},
+		#{create_time},
+		#{role_id},
+		#{modify_time},
+		#{remark}
+		)
+	</insert>
+	<update id="updateAdminUser" parameterType="AdminUser">
+		update t_admin_user
+		<set>
+			<if test="user_name != null and user_name != ''">
+				user_name=#{user_name},
+			</if>
+			<if test="nickname != null and nickname != ''">
+				nick_name=#{nickname},
+			</if>
+			<if test="password != null and password != ''">
+				password=#{password},
+			</if>
+			<if test="create_time != null">
+				create_time=#{create_time},
+			</if>
+			<if test="cell_phone != null and cell_phone != ''">
+				cellphone=#{cell_phone},
+			</if>
+			<if test="modify_time != null">
+				modify_time=#{modify_time},
+			</if>
+			<if test="status != null">
+				status=#{status}
+			</if>
+			<if test="role_id != null ">
+				role_id=#{role_id}
+			</if>
+			<if test="remark != null and remark != ''">
+				remark=#{remark}
+			</if>
+		</set>
+		where user_name=#{user_name}
+	</update>
+
+
+	<!--分页查询用户信息 -->
+	<select id="listUser" resultType="AdminUser" parameterType="java.util.Map">
+		select
+		user_id,user_name,password,nick_name as nickname,cellphone as cell_phone,status,create_time,role_id,modify_time,remark
+		from t_admin_user a
+		<where>
+			<if test="user_name != null and user_name != ''">
+				and  a.user_name = #{user_name}
+			</if>
+			<if test="nickname != null and nickname != ''">
+				and a.nick_name = #{nickname}
+			</if>
+			<if test="cell_phone != null and cell_phone != ''">
+				and a.cellphone = #{cell_phone}
+			</if>
+			<if test="status != null ">
+				and a.status = #{status}
+			</if>
+			<if test="create_time != null">
+				and a.create_time = #{create_time}
+			</if>
+			<if test="role_id != null ">
+				and a.role_id = #{role_id}
+			</if>
+			<if test="modify_time != null">
+				and a.modify_time == #{modify_time}
+			</if>
+		</where>
+		order by a.role_id desc limit ${start} , ${pageSize}
+	</select>
+
+	<!--查询用户总数 -->
+	<select id="selectUserCount" resultType="Integer">
+		select count(*) from t_admin_user a
+		<where>
+			<if test="user_name != null and user_name != ''">
+				and a.user_name = #{user_name}
+			</if>
+			<if test="nickname != null and nickname != ''">
+				and a.nick_name = #{nickname}
+			</if>
+			<if test="cell_phone != null and cell_phone != ''">
+				and a.cellphone = #{cell_phone}
+			</if>
+			<if test="status != null ">
+				and a.status = #{status}
+			</if>
+			<if test="create_time != null">
+				and a.create_time = #{create_time}
+			</if>
+			<if test="role_id != null ">
+				and a.role_id = #{role_id}
+			</if>
+			<if test="modify_time != null">
+				and a.modify_time == #{modify_time}
+			</if>
+		</where>
+	</select>
+
+
+	<!--查询用户总数 -->
+	<select id="checkExit" resultType="Integer">
+		select count(*) from
+		t_admin_user a WHERE user_name = #{user_name}
+	</select>
+
+</mapper>

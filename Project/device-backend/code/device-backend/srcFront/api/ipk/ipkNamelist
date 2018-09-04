@@ -1,0 +1,22 @@
+{
+	"code": 0,
+	"msg": "",
+	"total": 200,
+	"data": [
+		{
+			"ipkNameId": 1,
+			"ipkName": "wifidog",
+			"ipkNickName": "无线模块插件"
+		},
+		{
+			"ipkNameId": 2,
+			"ipkName": "wifidog2",
+			"ipkNickName": "无线模块插件2"
+		},
+		{
+			"ipkNameId": 3,
+			"ipkName": "wifidog3",
+			"ipkNickName": "无线模块插件3"
+		}
+	]
+}

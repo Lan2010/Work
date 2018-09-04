@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.star.point.consume";
+option java_outer_classname = "UserStarPointConsumeServiceProto";
+
+package start.point.consume;
+
+//用户星点消费服务类
+service UserStarPointConsumeService {
+    // 消费
+    rpc consume(UserStarPointConsumeInfo) returns (Result){}
+}
+
+//用户星点消费信息
+message UserStarPointConsumeInfo{
+    string mobile = 1; //手机号码-必填
+    int64 consumeTime = 2; //消费时间-必填
+    string consumeCount = 3; //消费数量-必填(0.001/0.01/1)
+    string consumeCause = 4; //消费原因-必填
+    string token = 5;//安全校验码-必填
+    string clientPlatform=6;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

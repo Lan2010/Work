@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.auth.idcard";
+option java_outer_classname = "UserIDCardAuthServiceProto";
+
+package user.auth.idcard;
+
+//用户身份证验证服务类
+service UserIDCardAuthService {
+    //验证
+    rpc auth (UserIDCardAuthInfo) returns (Result){}
+}
+
+//用户身份证验证信息
+message UserIDCardAuthInfo{
+    string mobile = 1; //手机号码-必填
+    string realName = 2;//真实姓名-必填
+    string idCard = 3;//身份证号码-必填
+    string authPlatform = 4;//认证平台-必填
+    enum AuthStatus{
+        SUC = 0;
+        FAILED = 1;
+    }
+    AuthStatus authStatus = 5; //认证状态-必填
+    string token = 6;//安全校验码-必填
+    int64 authTime = 7;//认证时间-必填
+    string clientPlatform=8;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

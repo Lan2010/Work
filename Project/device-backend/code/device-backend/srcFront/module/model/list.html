@@ -1,0 +1,47 @@
+
+<div class="toolbar">
+	
+	<div class="title"><i class="fa fa-hdd-o"></i>型号列表</div>
+
+	<div class="action">
+		<a href="javascript:void(0);" id="btnAdd" class="btn m"><i class="fa fa-plus"></i> <span>添加</span></a>
+		<!-- <a href="javascript:void(0);" class="btn m disabled" id="tBtnDelete"><i class="fa fa-trash-o"></i> <span>删除</span></a> -->
+	</div>
+	
+	<!-- Table page -->
+	<div data-grid="mainTable" data-jump class="toolbar-page"></div>
+	<!-- Table page -->
+
+	<div class="search" id="tSearch">
+		<form id="tFormSearch">
+			<div class="search-input">
+				<div class="keyword">
+					<input data-name="keyword" name="name" type="text"  placeholder="型号名称" />
+				</div>
+				<div class="btn-search">
+					<button type="submit" class="btn"><i class="fa fa-search"></i></button>
+				</div>
+				<div class="clear hide" title="清除"><i class="fa fa-close"></i></div>
+			</div>
+			
+		</form>
+	</div>
+</div>
+
+<div class="">
+	
+	<div class="main-table">
+		<table id="mainTable" class="table">
+			<thead>
+		        <tr>
+		        	<!-- <th class="th-multiCheck"><span class="checkbox-inline"><input type="checkbox"/><i></i></span></th> -->
+		        	<th class="txt-c">序号</th>
+		            <th>型号</th>
+		            <th class="txt-c">操作</th>
+		        </tr>
+	        </thead>
+	    </table>
+	    <div data-grid="mainTable" data-total data-go data-jump></div>
+	</div>
+
+</div>

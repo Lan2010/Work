@@ -1,0 +1,86 @@
+
+<div class="toolbar">
+
+	<div class="title"><i class="fa fa-tasks"></i>固件更新列表</div>
+
+	<div class="action">
+		<a href="#pluginTask/upgrade" class="btn m"><i class="fa fa-plus"></i> <span>升级插件</span></a>
+		<a href="#pluginTask/uninstall" class="btn m"><i class="fa fa-plus"></i> <span>卸载插件</span></a>
+	</div>
+	
+	<!-- Table page -->
+	<div data-grid="mainTable" data-jump class="toolbar-page">&nbsp;</div>
+	<!-- Table page -->
+
+	<div class="search" id="tSearch">
+		<form id="tFormSearch">
+			<div class="search-input">
+				<div class="keyword">
+					<input data-name="keyword" name="taskName" type="text" placeholder="任务名称" maxlength="20" />
+				</div>
+				<div class="btn-search">
+					<button type="submit" class="btn"><i class="fa fa-search"></i></button>
+				</div>
+				<div class="clear hide" title="清除"><i class="fa fa-close"></i></div>
+			</div>
+			<div class="adv">
+				<span data-toggle="filter" class="btn default">过滤 <i class="fa"></i></span>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="filter" id="tFilter">
+	<!-- <div class="arrow"></div> -->
+	<div class="inner">
+		<form id="tFormFilter">
+		<div class="cells cells-search">
+
+			<div class="cell">
+				<div class="hd"><label>插件名称</label></div>
+				<div class="bd"><input name="ipkNickName" type="text" class="input" maxlength="20"></div>
+			</div>
+			<div class="cell">
+				<div class="hd"><label>操作类型</label></div>
+				<div class="bd">
+					<select name="operateType" class="input">
+						<option value="">不限</option>
+						<option value="0">安装插件</option>
+						<option value="1">卸载插件</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="btn-area">
+				<button type="submit" class="btn blue">过滤</button>
+				<button type="button" class="btn default" data-btn="clear">清除</button>
+			</div>
+		</div>
+		
+		</form>
+	</div>
+</div>
+
+<div class="">
+	
+	<div class="main-table">
+		<table id="mainTable" class="table">
+			<thead>
+		        <tr>
+		        	<th class="th-sn">序号</th>
+		            <th>任务名称</th>
+		            <th>更新类型</th>
+		            <th>插件</th>
+		            <th>版本</th>
+		            <!-- <th>方式</th> -->
+		            <th class="txt-c">开始时间</th>
+		            <th class="txt-c">已完成/总数</th>
+		            <th class="th-progress">进度</th>
+		            <th>操作者</th>
+		        </tr>
+	        </thead>
+	    </table>
+	    <div data-grid="mainTable" data-total data-go data-jump></div>
+	</div>
+
+</div>

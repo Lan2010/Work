@@ -1,0 +1,62 @@
+
+<div class="toolbar">
+
+	<div class="title"><i class="fa fa-pie-chart"></i>设备统计</div>
+	
+	<!-- Table page -->
+	<div data-grid="mainTable" data-jump class="toolbar-page"></div>
+	<!-- Table page -->
+
+</div>
+
+<div class="">
+	
+	<div class="overview" id="overview">
+		<ul class="flex">
+			<li class="flex-item">
+				<div class="stat">
+					<div class="title">所有设备</div>
+					<div class="bd">
+						<div class="pic"><i class="fa fa-hdd-o"></i></div>
+						<div class="info">
+							<p><label>设备总数</label><span id="all_total">-</span></p>
+							<p><label>已上线数</label><span id="all_onlined">-</span></p>
+							<p><label>未上线数</label><span id="all_unonlined">-</span></p>
+						</div>
+					</div>
+				</div>
+			</li>
+
+			<li class="flex-item">
+				<div class="stat">
+					<div class="title">已绑定设备</div>
+					<div class="bd">
+						<div class="pic"><i class="fa fa-link"></i></div>
+						<div class="info">
+							<p><label>已绑定设备数</label><span id="bind_total">-</span></p>
+							<p><label>当前在线数</label><span id="bind_online">-</span></p>
+							<p><label>今日在线数</label><span id="bind_today">-</span></p>
+						</div>
+					</div>
+				</div>
+			</li>
+
+			<li class="flex-item">
+				<div class="stat">
+					<div class="title">未绑定设备</div>
+					<div class="bd">
+						<div class="pic"><i class="fa fa-unlink"></i></div>
+						<div class="info">
+							<p><label>未绑定设备数</label><span id="unbound_total">-</span></p>
+							<p><label>当前在线数</label><span id="unbound_online">-</span></p>
+							<p><label>今日在线数</label><span id="unbound_today">-</span></p>
+							<p><label>未上线数</label><span id="unbound_unonlined">-</span></p>
+						</div>
+					</div>
+				</div>
+			</li>
+			
+		</ul>
+	</div>
+
+</div>

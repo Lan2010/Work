@@ -1,0 +1,19 @@
+{
+	"code": 0,
+	"msg": "",
+	"data": {
+		"ipkTaskId": 1,
+		"taskName": "Mission 1",
+		"taskDesc": "a",
+		"operateType": 0,
+		"ipkName": "",
+		"ipkNickName": "22",
+		"version": "11",
+		"append": "--force-reinstall --force-overwrite",
+		"addTime": "12312",
+		"user_name": "xiaoming",
+		"status": 1,
+		"devTotal": 1000,
+		"completedNum": 500
+	}
+}

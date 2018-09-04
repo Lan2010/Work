@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="core.mapper.IpkTaskMapper">
+
+	<!--分页查询插件任务信息 -->
+	<select id="listIpkTask" resultType="IpkTask" parameterType="java.util.Map">
+		SELECT ipktask_id AS ipkTaskId ,i.task_name AS taskName,task_desc AS
+		taskDesc,start_type AS startType,start_time AS startTime,operate_type
+		AS operateType,append AS append,ipk_name AS ipkName,ipk_nickname AS
+		ipkNickName,ipk_VERSION AS VERSION,add_time AS ADDTIME,user_name AS
+		user_name,dev_total AS devTotal,completed_num AS completedNum,rate AS
+		rate,i.status AS STATUS FROM (`t_ipktask` i LEFT JOIN t_ipk_name n ON
+		i.ipk_name_id = n.ipk_name_id) LEFT JOIN t_admin_user a ON i.user_id =
+		a.user_id
+		<where>
+			<if test="taskName != null and taskName != ''">
+				and i.task_name = #{taskName}
+			</if>
+			<if test="operateType != null and operateType != '' or 0 == operateType">
+				and i.operate_type = #{operateType}
+			</if>
+			<if test="ipkName != null and ipkName != ''">
+				and n.ipk_name = #{ipkName}
+			</if>
+			<if test="ipkNickName != null and ipkNickName != ''">
+				and n.ipk_nickname = #{ipkNickName}
+			</if>
+			<if test="append != null and append != ''">
+				and i.append = #{append}
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and i.STATUS = #{status}
+			</if>
+		</where>
+		order by i.add_time DESC limit ${start} , ${pageSize}
+	</select>
+
+	<select id="selectIpkTaskCount" resultType="Integer">
+		select count(i.ipktask_id) from (`t_ipktask` i LEFT JOIN t_ipk_name n
+		ON i.ipk_name_id = n.ipk_name_id) LEFT JOIN t_admin_user a ON
+		i.user_id = a.user_id
+		<where>
+			<if test="taskName != null and taskName != ''">
+				and i.task_name = #{taskName}
+			</if>
+			<if test="operateType != null and operateType != ''or 0 == operateType">
+				and i.operate_type = #{operateType}
+			</if>
+			<if test="ipkName != null and ipkName != ''">
+				and n.ipk_name = #{ipkName}
+			</if>
+			<if test="ipkNickName != null and ipkNickName != ''">
+				and n.ipk_nickname = #{ipkNickName}
+			</if>
+			<if test="append != null and append != ''">
+				and i.append = #{append}
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and i.STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<update id="updateCompleteDev">
+		UPDATE t_ipktask i SET completed_num = (SELECT
+		COUNT(it.ipktask_id) FROM t_ipktask_task it LEFT JOIN t_task t ON
+		it.task_id = t.task_id WHERE it.ipktask_id = i.ipktask_id AND STATUS =
+		0);
+		UPDATE t_ipktask i set i.status = 1 where i.completed_num =
+		i.dev_total
+	</update>
+	
+	
+		<!--查询插件任务信息 -->
+	<select id="queryIpkTaskById" resultType="IpkTask" parameterType="java.lang.Integer">
+		SELECT ipktask_id AS ipkTaskId ,i.task_name AS taskName,task_desc AS
+		taskDesc,start_type AS startType,start_time AS startTime,operate_type
+		AS operateType,append AS append,ipk_name AS ipkName,ipk_nickname AS
+		ipkNickName,ipk_VERSION AS VERSION,add_time AS ADDTIME,user_name AS
+		user_name,dev_total AS devTotal,completed_num AS completedNum,rate AS
+		rate,i.status AS STATUS FROM (`t_ipktask` i LEFT JOIN t_ipk_name n ON
+		i.ipk_name_id = n.ipk_name_id) LEFT JOIN t_admin_user a ON i.user_id =
+		a.user_id where i.ipktask_id =  #{ipkTaskId}
+	</select>
+	
+	
+
+	<!--分页查询设备完成任务详情 -->
+	<select id="listDevTaskDetail" resultType="DevTaskDetail"
+		parameterType="java.util.Map">
+		SELECT de.dev_id AS devId,de.dev_number AS
+		number,de.dev_model AS
+		model,n.online_status AS onlineStatus,d.status
+		AS STATUS FROM ((SELECT
+		* FROM t_ipktask_task WHERE ipktask_id = #{ipkTaskId})t
+		LEFT JOIN t_task d ON
+		t.task_id = d.task_id ) LEFT JOIN t_device de ON
+		d.dev_num = de.dev_number
+		LEFT JOIN t_dev_online n ON d.dev_num =
+		n.dev_number ORDER BY
+		n.dev_number DESC LIMIT ${start} ,${pageSize}
+	</select>
+
+
+	<select id="selectDevTaskDetailCount" resultType="Integer"
+		parameterType="java.lang.Integer">
+		SELECT COUNT(t.ipktask_id) FROM `t_ipktask_task` t WHERE
+		t.ipktask_id = #{ipkTaskId}
+	</select>
+
+
+
+</mapper>

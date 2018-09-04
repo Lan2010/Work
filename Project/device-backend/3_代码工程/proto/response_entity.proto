@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto";
+option java_outer_classname = "ResponseEntityProto";
+
+//返回信息
+message ResponseEntity{
+    int32 code = 1; //请求状态 200=请求处理成功，500=请求处理失败，300=业务逻辑失败（message）
+    string message = 2; //信息
+}

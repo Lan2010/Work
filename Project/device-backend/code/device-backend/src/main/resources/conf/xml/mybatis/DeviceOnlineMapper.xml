@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="core.mapper.DeviceOnlineMapper">
+	<resultMap id="resultMap" type="core.pojo.DeviceOnline">
+		<id column="dev_number" property="devNumber" />
+		<id column="online_status" property="onlineStatus" />
+		<id column="record_time" property="recordTime" />
+	</resultMap> 
+	
+	<insert id="addDeviceOnline" parameterType="DeviceOnline">
+		insert into t_dev_online(
+		dev_number,
+		online_status,
+		record_time
+		) values(
+		#{devNumber},
+		#{onlineStatus},
+		#{recordTime}
+		)
+	</insert>
+	
+	<update id="updateDeviceOnline" parameterType="DeviceOnline">
+		update t_dev_online
+		<set>
+			<if test="onlineStatus != null ">
+				online_status=#{onlineStatus},
+			</if>
+			<if test="recordTime != null">
+				record_time=#{recordTime},
+			</if>
+		</set>
+		where dev_number=#{devNumber}
+	</update>
+</mapper>

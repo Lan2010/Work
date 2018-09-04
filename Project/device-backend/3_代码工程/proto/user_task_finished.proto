@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.task.finished";
+option java_outer_classname = "UserTaskFinishedServiceProto";
+
+package user.task.finished;
+
+//用户任务完成服务类
+service UserTaskFinishedService {
+    //任务完成
+    rpc finished(UserTaskFinishedInfo) returns (Result){}
+}
+
+//用户任务完成信息
+message UserTaskFinishedInfo{
+    string mobile = 1; //手机号码-必填
+    string taskId = 2; //任务ID-必填
+    string taskName = 3;//任务名称-必填
+    string taskInfo = 4;//任务信息-选填
+    int64 finishedTime = 5; //完成时间-必填
+    string token = 6;//安全校验码-必填
+    string clientPlatform=7;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

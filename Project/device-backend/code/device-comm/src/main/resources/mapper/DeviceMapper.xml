@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianzhixing.devicecomm.mapper.DeviceMapper">
+
+	<insert id="startTask" parameterType="Task">
+		insert into
+		t_task(task_id,dev_num,operate,start_time,replay_time,status)
+		values(#{taskId},#{devNum},#{operate},#{startTime},#{replayTime},#{status});		
+	</insert>
+
+	<insert id="addMiddleTask" parameterType="Task">
+		insert into t_ipktask_task(ipktask_id,task_id) values
+		(#{ipkTaskId},#{taskId})
+	</insert>
+	
+	<insert id="addshellMiddleTask" parameterType="Task">
+		insert into t_shelltask_task(shelltask_id,task_id) values
+		(#{ipkTaskId},#{taskId})
+	</insert>
+	
+	<insert id="addfirmwareMiddleTask" parameterType="Task">
+		insert into t_firmwaretask_task(firmwaretask_id,task_id) values
+		(#{ipkTaskId},#{taskId})
+	</insert>
+
+	<update id="replayTask" parameterType="Task">
+		update t_task set
+		replay_time =
+		#{replayTime},status =
+		#{status} where 1=1
+		and
+		task_id=#{taskId}
+	</update>
+
+	<select id="getDevice" parameterType="java.lang.Integer"
+		resultType="Device">
+		select dev_id as devId,dev_number as number,dev_model
+		as
+		model from t_device where dev_id = #{devId}
+	</select>
+
+	<select id="getDevByNum" parameterType="java.lang.String"
+		resultType="Device">
+		select dev_id as devId,dev_number as number,dev_model
+		as
+		model,mac as mac,is_onlined as isOnlined,tag as tag from t_device
+		where dev_number = #{devNum}
+	</select>
+
+	<insert id="online" parameterType="java.util.Map">
+		insert into
+		t_dev_online(dev_number,online_status,record_time)
+		VALUES(#{devNum},#{status},#{time}) ON DUPLICATE KEY UPDATE
+		dev_number=#{devNum},online_status=#{status},record_time=#{time}
+	</insert>
+
+	<insert id="updateDev" parameterType="java.util.Map">
+		<selectKey keyProperty="count" resultType="int" order="BEFORE">
+			select count(*) from t_device where dev_number = #{devNum}
+		</selectKey>
+		<if test="count > 0">
+			update t_device
+			<set>
+				is_onlined= 1,
+			</set>
+			<where>
+				dev_number = #{devNum}
+			</where>
+		</if>
+		<if test="count==0">
+			insert into
+			t_device(dev_number,belong_unit_id,mac,add_time,is_onlined,tag)
+			VALUES(#{devNum},0,#{devNum},#{time},1,1)
+		</if>
+	</insert>
+
+</mapper>

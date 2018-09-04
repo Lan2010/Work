@@ -1,0 +1,1 @@
+﻿define(["jquery","Global"],function(a,c){"use strict";return{onSearch:function(n,o){console.log("[Module][/index] onSearch - params",o)},onLoad:function(n,o){var e;console.log("[Module][/index] onLoad - params",o),e=c.nickName?"，"+c.nickName:"",a("#nickName").text(e)}}});

@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user";
+option java_outer_classname = "UserInfoServiceProto";
+
+package user;
+
+//用户信息服务类
+service UserInfoService {
+    // 采集用户信息
+    rpc acquisition(UserInfo) returns (Result){}
+}
+
+//用户信息
+message UserInfo{
+    string mobile = 1; //手机号码-必填
+    string email = 2; //邮箱-选填
+    string realName = 3;//真实姓名-选填
+    string idCard = 4;//身份证号码-选填
+    string nickName = 5;//昵称-选填
+    string userFromType = 6;//用户渠道-必填(自然流量，推荐等来源)
+    string avatar = 7;//头像-选填(base64 image byte)
+    string userOperType = 8;//用户操作类型 -  必填
+    string wxID = 9;//微信ID-选填
+    string qqID = 10;//QQID-选填
+    string sinaWeiBoID = 11;//新浪微博ID-选填
+    string token = 12;//安全校验码-必填
+    string clientPlatform=13;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+    int64 regTime = 14; //注册时间 - 必填
+    string ip = 15; //IP - 选填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

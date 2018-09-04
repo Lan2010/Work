@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="core.mapper.DeviceTypeMapper">
+	<resultMap id="resultMap" type="core.pojo.DeviceType">
+		<id column="code" property="code" />
+		<id column="name" property="name" />
+	</resultMap>
+
+	<select id="getDeviceType" resultMap="resultMap">
+		select *
+		from t_model
+	</select>
+
+	<insert id="addDeviceType" parameterType="DeviceType">
+		insert into t_model(
+		code,
+		name
+		) values(
+		#{code},
+		#{name}
+		)
+	</insert>
+
+	<select id="getCode" parameterType="java.lang.String"
+		resultType="DeviceType">
+		select * from t_model where
+		code = #{code}
+	</select>
+
+	<update id="updateDeviceType" parameterType="DeviceType">
+		update t_model
+		<set>
+			<if test="code != null and code != ''">
+				code=#{code},
+			</if>
+			<if test="name != null and name != ''">
+				name=#{name},
+			</if>
+		</set>
+		where code=#{code}
+	</update>
+</mapper>

@@ -1,0 +1,191 @@
+
+<div class="toolbar">
+	<div class="action full back">
+		<a href="javascript: window.history.back();" class="btn m"><i class="fa fa-arrow-left"></i></a>
+	</div>
+	<div class="title">设备详情</div>
+
+</div>
+
+
+<div class="panel-wrap">
+	
+	<!-- Device info -->
+	<div class="panel panel-detail">	
+		<div class="panel-header">
+			<div class="title">设备信息</div>
+		</div>
+
+		<form id="formMod">
+		<input name="id" type="hidden" />
+		<div class="panel-body">
+			<div class="cells cells-form flex flex-wrap" id="infoBody">
+
+				<div class="cell">
+					<div class="hd"><label>设备编号</label></div>
+					<div class="bd">
+						<div class="control">
+							<input name="number" type="text" class="input input-read eitable" readonly required devId='true' />
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd"><label>星链账号</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="bindAccount" class="input-read"></span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="cell">
+					<div class="hd"><label>是否上过线</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="isOnlined" class="input-read"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd"><label>绑定时间</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="bindTime" class="input-read"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd"><label>在线状态</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="onlineStatus" class="input-read"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd"><label id="devDurationLabel">时长</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="millisecond" class="input-read"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd"><label>所属单位</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="belongUnitId" class="input-read"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd"><label>入库时间</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="addTime" class="input-read"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd"><label>设备型号</label></div>
+					<div class="bd">
+						<div class="control">
+							<input name="model" type="text" class="input input-read eitable" readonly required maxlength="20" />
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd"><label>生产日期</label></div>
+					<div class="bd">
+						<div class="control">
+							<input id="productTtime2" name="productTtime" type="text" class="input input-read" readonly required />
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd"><label>密　　码</label></div>
+					<div class="bd">
+						<div class="control">
+							<span name="devPasswd" class="input-read"></span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="panel-footer hide" id="devBtn">
+			<button type="submit" class="btn m blue">修改</button>
+		</div>
+		</form>
+	</div>
+	
+	<!-- Device config -->
+	<div class="panel panel-detail">	
+		<div class="panel-header">
+			<div class="title">设备参数配置</div>
+		</div>
+
+		<form id="formParam">
+		<input id="devNo" type="hidden" />
+		<div class="panel-body">
+			<div class="cells cells-form flex flex-wrap" id="paramsBody">
+
+			</div>
+		</div>
+
+		<div class="panel-footer hide" id="devBtnParam">
+			<button type="submit" class="btn m blue">修改</button>
+		</div>
+		</form>
+	</div>
+
+
+	<!-- Device system pass -->
+	<div class="panel panel-detail">	
+		<div class="panel-header">
+			<div class="title">设备系统用户密码</div>
+		</div>
+
+		<form id="formPass">
+		<input id="devNum" name="devNum" type="hidden" />
+		<div class="panel-body">
+			<div class="cells cells-form flex flex-wrap" id="passBody">
+
+				<div class="cell">
+					<div class="hd"><label>用户名</label></div>
+					<div class="bd">
+						<div class="control">
+							<input name="user" type="text" class="input" maxlength="20" required />
+						</div>
+					</div>
+				</div>
+
+				<div class="cell">
+					<div class="hd"><label>密码</label></div>
+					<div class="bd">
+						<div class="control">
+							<input name="passwd" type="text" class="input" maxlength="20" required />
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="panel-footer" id="devBtn">
+			<button type="submit" class="btn m blue">修改</button>
+		</div>
+		</form>
+	</div>
+
+</div>

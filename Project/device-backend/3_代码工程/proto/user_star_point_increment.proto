@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.star.point.increment";
+option java_outer_classname = "UserStarPointIncrementServiceProto";
+
+package start.point.increment;
+
+//用户星点增长服务类
+service UserStarPointIncrementService {
+    //增长星点
+    rpc increment(UserStarPointIncrementInfo) returns (Result){}
+}
+
+//用户星点增长信息
+message UserStarPointIncrementInfo{
+    string mobile = 1; //手机号码-必填
+    string taskId = 2; //任务ID-选填
+    string taskName = 3;//任务名称-选填
+    string taskInfo = 4;//任务信息-选填
+    int64 incrementTime = 5; //增长时间-必填
+    string incrementCount = 6; //增长数量-必填
+    string incrementCause = 7; //增长原因-必填
+    string token = 8;//安全校验码-必填
+    string clientPlatform=9;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

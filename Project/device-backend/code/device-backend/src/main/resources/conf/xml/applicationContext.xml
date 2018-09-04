@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="  
+	    http://www.springframework.org/schema/beans
+	    http://www.springframework.org/schema/beans/spring-beans.xsd  
+	    http://www.springframework.org/schema/context   
+	    http://www.springframework.org/schema/context/spring-context.xsd
+	    http://www.springframework.org/schema/aop 
+	    http://www.springframework.org/schema/aop/spring-aop.xsd
+	    http://www.springframework.org/schema/tx
+	    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 引入Properties配置文件 -->
+	<bean id="config"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!-- 是否忽略不可解析的 -->
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<!-- 多个locations， 单个location -->
+		<property name="locations">
+			<list>
+				<value>classpath:conf/properties/application.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!--创建jdbc数据源 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 数据库连接驱动 -->
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<!-- 连接地址 -->
+		<property name="url" value="${jdbc.url}" />
+		<!-- 连接账户名 -->
+		<property name="username" value="${jdbc.username}" />
+		<!-- 连接账户的密码 -->
+		<property name="password" value="${jdbc.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="1" />
+		<property name="minIdle" value="1" />
+		<property name="maxActive" value="10" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="10000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="testWhileIdle" value="true" />
+		<!-- 这里建议配置为TRUE，防止取到的连接不可用 -->
+		<property name="testOnBorrow" value="true" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+		<!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->
+		<property name="defaultAutoCommit" value="true" />
+		<!-- 验证连接有效与否的SQL，不同的数据配置不同 -->
+		<property name="validationQuery" value="select 1 " />
+		<property name="filters" value="stat" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="logFilter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="logFilter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
+		<property name="statementExecutableSqlLogEnable" value="false" />
+	</bean>
+
+	<!-- 利用JDBC事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 声明式事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+	<!-- 设定事务过滤方法 -->
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="java.lang.Exception" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 设定过滤的service,匹配所有业务层方法 -->
+	<aop:config>
+		<aop:pointcut id="transactionPointcut" expression="execution(* core.service.*.*(..))" />
+		<aop:advisor pointcut-ref="transactionPointcut"
+			advice-ref="transactionAdvice" />
+	</aop:config>
+
+	<!-- 创建SqlSessionFactory，同时指定数据源 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:conf/xml/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath*:conf/xml/mybatis/*.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!--指定要扫描的包，在此包之下的映射器都会被搜索到。可指定多个包，包与包之间用逗号或分号分隔 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="core.mapper" />
+	</bean>
+
+	<context:annotation-config />
+	<!-- 对象注入扫描路径 -->
+	<context:component-scan base-package="core.service" />
+	<context:component-scan base-package="core.dao" />
+	<context:component-scan base-package="core.component" />
+
+	<!-- 获取sqlSession实例，用于需要时直接注入 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" /> 
+	 
+	<bean id="natsComponent" class="core.component.NatsComponentImpl" init-method="handleMessage"/>  
+</beans>

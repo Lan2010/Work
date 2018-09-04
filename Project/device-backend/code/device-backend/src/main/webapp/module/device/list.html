@@ -1,0 +1,123 @@
+﻿
+<div class="toolbar">
+
+	<div class="title"><i class="fa fa-hdd-o"></i>设备管理</div>
+
+	<div class="action">
+		<a href="#device/add" class="btn m"><i class="fa fa-plus"></i> <span>添加</span></a>
+		<a href="javascript:void(0);" class="btn m dim" id="btnReboot" title="在线设备才允许重启"><i class="fa fa-circle-o-notch"></i> <span>重启</span></a>
+	</div>
+	
+	<!-- Table page -->
+	<div data-grid="mainTable" data-jump class="toolbar-page"></div>
+	<!-- Table page -->
+
+	<div class="search" id="tSearch">
+		<form id="tFormSearch">
+			<div class="search-input">
+				<div class="keyword">
+					<input data-name="keyword" name="number" type="text" placeholder="设备编号" maxlength="20" />
+				</div>
+				<div class="btn-search">
+					<button type="submit" class="btn"><i class="fa fa-search"></i></button>
+				</div>
+				<div class="clear hide" title="清除"><i class="fa fa-close"></i></div>
+			</div>
+			<div class="adv">
+				<span data-toggle="filter" class="btn default">过滤 <i class="fa"></i></span>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="filter" id="tFilter">
+	<!-- <div class="arrow"></div> -->
+	<div class="inner">
+		<form id="tFormFilter">
+		<div class="cells cells-search">
+			<!-- <div class="cell">
+				<div class="hd"><label>公众号名称</label></div>
+				<div class="bd"><input name="pn_name" type="text" class="input"></div>
+			</div> -->
+			<div class="cell">
+				<div class="hd"><label>型号</label></div>
+				<div class="bd"><input name="model" type="text" class="input" maxlength="20"></div>
+			</div>
+			<div class="cell">
+				<div class="hd"><label>星链账号</label></div>
+				<div class="bd"><input name="bindAccount" type="text" class="input" maxlength="20"></div>
+			</div>
+			<div class="cell">
+				<div class="hd"><label>绑定状态</label></div>
+				<div class="bd">
+					<select name="isBind" class="input">
+						<option value="">不限</option>
+						<option value="1">绑定</option>
+						<option value="0">未绑定</option>
+					</select>
+				</div>
+			</div>
+			<div class="cell">
+				<div class="hd"><label>在线状态</label></div>
+				<div class="bd">
+					<select name="onlineStatus" class="input">
+						<option value="">不限</option>
+						<option value="1">在线</option>
+						<option value="0">离线</option>
+					</select>
+				</div>
+			</div>
+			<div class="cell">
+				<div class="hd"><label>是否上过线</label></div>
+				<div class="bd">
+					<select name="isOnlined" class="input">
+						<option value="">不限</option>
+						<option value="1">是</option>
+						<option value="0">否</option>
+					</select>
+				</div>
+			</div>
+			<div class="cell">
+				<div class="hd"><label>归属</label></div>
+				<div class="bd">
+					<select name="belongUnitId" class="input">
+						<option value="">不限</option>
+						<option value="1">天智星</option>
+						<option value="0">未知</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="btn-area">
+				<button type="submit" class="btn blue">过滤</button>
+				<button type="button" class="btn default" data-btn="clear">清除</button>
+			</div>
+		</div>
+		
+		</form>
+	</div>
+</div>
+
+<div class="">
+	
+	<div class="main-table">
+		<table id="mainTable" class="table">
+			<thead>
+		        <tr>
+		        	<th class="th-sn">序号</th>
+		            <th>设备编号</th>
+		            <th>型号</th>
+		            <th>星链账号</th>
+		            <th class="txt-c">在线状态</th>
+		            <th>时长</th>
+		            <th class="txt-c">是否上过线</th>
+		            <!-- <th class="txt-c">添加时间</th> -->
+		            <th>归属</th>
+		            <th class="txt-c">操作</th>
+		        </tr>
+	        </thead>
+	    </table>
+	    <div data-grid="mainTable" data-total data-go data-jump></div>
+	</div>
+
+</div>

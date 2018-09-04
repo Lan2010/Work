@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="core.mapper.ShellMapper">
+	<!--保存插件信息 -->
+	<insert id="saveShell" parameterType="Shell">
+		insert into
+		t_shell(shell_name,shell_desc,shell_path,user_id,addTime,status,shell_md5)
+		values(
+		#{shellName},
+		#{shellDesc},
+		#{shellPath},
+		#{user_id},
+		#{addTime},
+		#{status},
+		#{shell_md5}
+		)
+	</insert>
+
+	<!--分页查询脚本信息 -->
+	<select id="listShell" resultType="shell" parameterType="java.util.Map">
+		select shell_id as shellId ,shell_name as shellName,shell_desc as
+		shellDesc,shell_path as shellPath,s.user_id,a.user_name,addTime as
+		addTime,s.status as
+		status
+		from t_shell s LEFT JOIN t_admin_user a ON
+		s.user_id = a.user_id
+		<where>
+			<if test="shellName != null and shellName != ''">
+				and s.shell_name = #{shellName}
+			</if>
+			<if test="user_name != null and user_name != ''">
+				and a.user_name = #{user_name}
+			</if>
+			<if test="addTime != null ">
+				and date(s.ADDTIME) = date(#{addTime,jdbcType=TIMESTAMP})
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and s.STATUS = #{status}
+			</if>
+		</where>
+		order by s.ADDTIME DESC limit ${start} , ${pageSize}
+	</select>
+
+	<select id="selectShellCount" resultType="Integer">
+		select count(s.shell_id)
+		from t_shell s LEFT JOIN t_admin_user a ON
+		s.user_id = a.user_id
+		<where>
+			<if test="shellName != null and shellName != ''">
+				and s.shell_name = #{shellName}
+			</if>
+			<if test="user_name != null and user_name != ''">
+				and a.user_name = #{user_name}
+			</if>
+			<if test="addTime != null ">
+				and date(s.ADDTIME) = date(#{addTime,jdbcType=TIMESTAMP})
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and s.STATUS = #{status}
+			</if>
+
+		</where>
+	</select>
+
+	<!--删除脚本 -->
+	<delete id="deleteShell" parameterType="java.lang.Integer">
+		delete from t_shell where
+		shell_id = #{shellId}
+	</delete>
+
+	<!--根据插件名ID获取插件 -->
+	<select id="selectShellById" resultType="Shell" parameterType="java.lang.Integer">
+		SELECT shell_id as shellId ,shell_name as shellName,shell_desc as
+		shellDesc,shell_path as shellPath,user_id,addTime as
+		addTime,status as
+		status,shell_md5 as shell_md5
+		from t_shell s WHERE shell_id=#{shellId}
+	</select>
+
+	<!--新增任务 -->
+	<insert id="addTask" parameterType="ShellTask" useGeneratedKeys="true"
+		keyProperty="taskId">
+		insert into
+		t_shelltask(task_name,task_desc,shell_id,add_time,user_id,dev_total,status)
+		VALUES(#{taskName},#{taskDesc},#{shellId},#{addTime},#{user_id},#{devTotal},0)
+	</insert>
+
+	<update id="updateCompleteDev">
+		UPDATE t_shelltask i SET completed_num = (SELECT
+		COUNT(it.shelltask_id) FROM t_shelltask_task it LEFT JOIN t_task t ON
+		it.task_id = t.task_id WHERE it.shelltask_id = i.task_id AND STATUS =
+		0);
+		UPDATE t_shelltask i set i.status = 1 where i.completed_num =
+		i.dev_total;
+	</update>
+
+	<!--分页查询任务信息 -->
+	<select id="listTask" resultType="ShellTask" parameterType="java.util.Map">
+		SELECT task_id AS taskId,i.task_name AS taskName,task_desc AS
+		taskDesc,i.add_time AS addTime,dev_total AS
+		devTotal,completed_num AS
+		completedNum,i.status AS status, i.shell_id
+		AS shellId,shell_name AS
+		shellName,user_name AS user_name FROM
+		(`t_shelltask` i LEFT JOIN
+		t_shell n ON i.shell_id = n.shell_id) LEFT
+		JOIN t_admin_user a ON
+		i.user_id = a.user_id
+		<where>
+			<if test="taskName != null and taskName != ''">
+				and i.task_name = #{taskName}
+			</if>
+			<if test="shellName != null and shellName != ''">
+				and n.shell_name = #{shellName}
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and i.STATUS = #{status}
+			</if>
+		</where>
+		order by i.add_time DESC limit ${start} , ${pageSize}
+	</select>
+
+	<select id="queryTaskDetailById" resultType="ShellTask"
+		parameterType="java.lang.Integer">
+		SELECT task_id AS taskId,i.task_name AS
+		taskName,task_desc AS
+		taskDesc,i.add_time AS
+		addTime,dev_total AS
+		devTotal,completed_num AS completedNum,i.status AS
+		status, i.shell_id
+		AS shellId,shell_name AS shellName,user_name AS
+		user_name FROM
+		(`t_shelltask` i LEFT JOIN t_shell n ON i.shell_id =
+		n.shell_id) LEFT
+		JOIN t_admin_user a ON i.user_id = a.user_id where
+		i.task_id =#{taskId}
+	</select>
+
+
+	<select id="selectTaskCount" resultType="Integer">
+		select count(i.task_id) from (`t_shelltask` i LEFT JOIN t_shell n ON
+		i.shell_id = n.shell_id) LEFT
+		JOIN t_admin_user a ON i.user_id =
+		a.user_id
+		<where>
+			<if test="taskName != null and taskName != ''">
+				and i.task_name = #{taskName}
+			</if>
+
+			<if test="shellName != null and shellName != ''">
+				and n.shell_name = #{shellName}
+			</if>
+			<if test="status != null and status != ''or 0 == status">
+				and i.STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+
+	<!--插件名列表 -->
+	<select id="listShellName" resultType="Shell">
+		SELECT shell_id as
+		shellId
+		,shell_name as shellName from t_shell s
+	</select>
+
+
+	<!--查询脚本名是否已存在 -->
+	<select id="checkExit" resultType="Integer" parameterType="Shell">
+		select count(t.shell_id) from
+		t_shell t WHERE shell_name = #{shellName}
+	</select>
+	
+		<!--分页查询设备完成任务详情 -->
+	<select id="listDevTaskDetail" resultType="DevTaskDetail"
+		parameterType="java.util.Map">
+		SELECT de.dev_id AS devId,de.dev_number AS
+		number,de.dev_model AS
+		model,n.online_status AS onlineStatus,d.status
+		AS STATUS FROM ((SELECT
+		* FROM t_shelltask_task WHERE shelltask_id = #{taskId})t
+		LEFT JOIN t_task d ON
+		t.task_id = d.task_id ) LEFT JOIN t_device de ON
+		d.dev_num = de.dev_number
+		LEFT JOIN t_dev_online n ON d.dev_num =
+		n.dev_number ORDER BY
+		n.dev_number DESC LIMIT ${start} ,${pageSize}
+	</select>
+
+
+	<select id="selectDevTaskDetailCount" resultType="Integer"
+		parameterType="java.lang.Integer">
+		SELECT COUNT(t.shelltask_id) FROM `t_shelltask_task` t WHERE
+		t.shelltask_id = #{taskId}
+	</select>
+	
+</mapper>

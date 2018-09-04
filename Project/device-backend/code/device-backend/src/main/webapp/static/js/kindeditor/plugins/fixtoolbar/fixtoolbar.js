@@ -1,0 +1,1 @@
+﻿KindEditor.plugin("fixtoolbar",function(s){var o=this;function i(){var o=s(".ke-toolbar"),i=o.pos().y;s(window).bind("scroll",function(){"fixed"==o.css("position")?document.body.scrollTop-i<0&&(o.css("position","static"),o.css("top","auto")):o.pos().y-document.body.scrollTop<0&&(o.css("position","fixed"),o.css("top",0))})}o.fixToolBar&&(o.isCreated?i():o.afterCreate(i))});

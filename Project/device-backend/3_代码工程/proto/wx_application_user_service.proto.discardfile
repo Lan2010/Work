@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.wx";
+option java_outer_classname = "WXApplicationUserInfoServiceProto";
+
+package user.wx.app;
+
+//微信小程序用户服务类
+service WXApplicationUserInfoService {
+    //采集微信小程序用户信息
+    rpc acquisition(WXApplicationUserInfo) returns (Result){}
+}
+
+//微信小程序用户信息
+message WXApplicationUserInfo{
+    string mobile = 1; //手机号码-选填
+    string email = 2; //邮箱-选填
+    string nickName = 3;//昵称-选填
+    string userFromType = 4;//用户渠道-必填
+    string avatar = 5;//头像-选填
+    string userOperType = 6;//用户操作类型-必填
+    string wxID = 7;//微信ID-必填
+    string token = 8;//安全校验码-必填
+    string clientPlatform=9;//客户端平台 - ClientPlatform enum name value, 必填
+    int64 regTime = 10;//注册时间
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

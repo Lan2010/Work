@@ -1,0 +1,44 @@
+﻿
+<div class="toolbar">
+
+	<div class="title"><i class="fa fa-file-text-o"></i>操作日志</div>
+	
+	<!-- Table page -->
+	<div data-grid="mainTable" data-jump class="toolbar-page">&nbsp;</div>
+	<!-- Table page -->
+
+	<div class="search" id="tSearch">
+		<form id="tFormSearch">
+			<div class="search-input">
+				<div class="keyword">
+					<input data-name="keyword" name="user" type="text"  placeholder="用户名" maxlength="20" />
+				</div>
+				<div class="btn-search">
+					<button type="submit" class="btn"><i class="fa fa-search"></i></button>
+				</div>
+				<div class="clear hide" title="清除"><i class="fa fa-close"></i></div>
+			</div>
+			<!-- <div class="adv">
+				<span data-toggle="filter" class="btn default">过滤 <i class="fa"></i></span>
+			</div> -->
+		</form>
+	</div>
+</div>
+
+<div class="">
+	
+	<div class="main-table">
+		<table id="mainTable" class="table">
+			<thead>
+		        <tr>
+		        	<th class="th-sn">序号</th>
+		            <th>操作内容</th>
+		            <th>操作时间</th>
+		            <th>操作人</th>
+		        </tr>
+	        </thead>
+	    </table>
+	    <div data-grid="mainTable" data-total data-go data-jump></div>
+	</div>
+
+</div>

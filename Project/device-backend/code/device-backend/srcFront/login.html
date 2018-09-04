@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<title>天智星 - 设备管控平台</title>
+<link rel="stylesheet" href="static/css/font.4.7.0.css">
+<link rel="stylesheet" href="static/css/iconfont.css">
+<link rel="stylesheet" href="static/css/login.css">
+<script>
+/*
+ *  [定义版本号]
+ *  1. Gulp 发布将自动把最后一位加1，如: 1.0.0.1 -> 1.0.0.2
+ *  2. 请不要变更 version = '' 格式，包括空格
+ *  3. version 用作缓存处理
+ */
+var version = '1.0.0.88';
+var path = window.path = '/stardev';
+var apiPath = window.apiPath = '/stardev/api';
+</script>
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="login-wrap">
+    	<div class="title">设备管控平台</div>
+    	<div class="login">
+            <form id="loginForm">
+        		<div class="cells cells-form">
+        			<div class="cell">
+        				<div class="hd"><i class="fa fa-user"></i></div>
+        				<div class="bd"><input id="username" name="user_name" type="text" class="input" placeholder="用户名"></div>
+        			</div>
+        			<div class="cell">
+        				<div class="hd"><i class="fa fa-lock"></i></div>
+        				<div class="bd"><input id="password" name="password" type="password" class="input" placeholder="密码"></div>
+        			</div>
+                    <!-- <div class="cell code">
+                        <div class="hd"><i class="fa fa-check-circle-o"></i></div>   
+                        <div class="bd"><input id="code" name="validateCode"  type="text" class="input" placeholder="验证码"></div>
+                        <div class="ft">
+                            <img id="imgCode" src="static/images/login_code.gif" class="img">
+                            <a href="javascript:void(0);" id="btnCode">换一张</a>
+                        </div>
+                    </div> -->
+        		</div>
+                <div class="btn-area">
+                    <div class="error" id="error"></div>
+                    <button type="submit" class="btn" id="btnSubmit">登 录</button>
+                </div>
+            </form>
+    	</div>
+        <div class="copyright">Copyright&nbsp;&copy;&nbsp;2018&nbsp;天智星</div>
+    </div>
+</div>
+
+<script src="static/js/lib/require.min.js" data-main="static/js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.login.wx";
+option java_outer_classname = "WXAapplicationUserLoginServiceProto";
+
+package user.login.wx;
+
+//用户登录服务类
+service WXAapplicationUserLoginService {
+    //登录信息
+    rpc login(WXAapplicationUserLoginInfo) returns (Result){}
+}
+
+//用户登录信息
+message WXAapplicationUserLoginInfo{
+    string mobile = 1; //手机号码-选填
+    int64 loginTime = 2; //登录时间-必填
+    string clientPlatform=3;//客户端平台 - ClientPlatform enum name value, 必填
+    string token = 4;//安全校验码-必填
+    string wxID = 5;//微信ID-选填
+    string qqID = 6;//QQtID-选填
+    string sinaWeiBoID = 7;//新浪微博ID-选填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

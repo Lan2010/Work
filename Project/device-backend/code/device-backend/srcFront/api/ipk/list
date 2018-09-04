@@ -1,0 +1,43 @@
+{
+	"code": 0,
+	"msg": "",
+	"total": 200,
+	"data": [
+		{
+			"ipkId": 1,
+			"ipkName": "a",
+			"model": "TZX-01",
+			"version": "v1.0.0",
+			"desc": "",
+			"ipkPath": "",
+			"user_id": 1,
+			"addTime": 1529271212000,
+			"status": 1,
+			"ipk_md5": ""
+		},
+		{
+			"ipkId": 1,
+			"ipkName": "a",
+			"model": "TZX-01",
+			"version": "v1.0.0",
+			"desc": "",
+			"ipkPath": "",
+			"user_id": 1,
+			"addTime": 1529271212000,
+			"status": 1,
+			"ipk_md5": ""
+		},
+		{
+			"ipkId": 1,
+			"ipkName": "a",
+			"model": "TZX-01",
+			"version": "v1.0.0",
+			"desc": "",
+			"ipkPath": "",
+			"user_id": 1,
+			"addTime": 1529271212000,
+			"status": 1,
+			"ipk_md5": ""
+		}
+	]
+}

@@ -1,0 +1,81 @@
+{
+	"code": 0,
+	"msg": "dsfsf",
+	"conf": [
+		{
+			"id":1,
+			"group":"probe",
+			"viewName":"探针开关",
+			"devParam":"newprobe.probe.enable",
+			"value":"1",
+			"describe":"",
+			"rw":"rw",
+			"inputType":"radio",
+			"options":"[{\"name\":\"开启\",\"value\":\"1\"},{\"name\":\"关闭\",\"value\":\"0\"}]",
+			"required": 0,
+			"rule": "",
+			"regExp": "",
+			"regExpTip": ""
+		},
+		{
+			"id":1,
+			"group":"probe",
+			"viewName":"探针服务器",
+			"devParam":"newprobe.probe.server",
+			"value":"probe.tzx.com",
+			"describe":"",
+			"rw":"rw",
+			"inputType":"text",
+			"options":"",
+			"required": 1,
+			"rule": "",
+			"regExp": "^(([0-9a-zA-Z-]{1,63}\\.)+[a-zA-Z]{2,4})$|^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$",
+			"regExpTip": "请输入域名 或 IP"
+		},
+		{
+			"id":1,
+			"group":"probe",
+			"viewName":"探针端口",
+			"devParam":"newprobe.probe.port",
+			"value":"3333",
+			"describe":"1025 ~ 65535 之间",
+			"rw":"rw",
+			"inputType":"text",
+			"options":"",
+			"required": 1,
+			"rule": "",
+			"regExp": "^(102[5-9]{1}|10[3-9]\\d{1}|1[1-9]\\d{2}|[2-9]\\d{3}|[1-5]\\d{4}|6[0-4]\\d{3}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])$",
+			"regExpTip": "1025 ~ 65535 之间"
+		},
+		{
+			"id":1,
+			"group":"probe",
+			"viewName":"探针抓包数",
+			"devParam":"newprobe.probe.capcnt",
+			"value":"2000",
+			"describe":"单次扫描单个信道无线包总个数上限，建议（500 ~ 3000之间）",
+			"rw":"rw",
+			"inputType":"text",
+			"options":"",
+			"required": 1,
+			"rule": "",
+			"regExp": "^([0-9]|[1-9]\\d{1}|[1-9]\\d{2}|[1-9]\\d{3}|[1-2]\\d{4}|31\\d{3}|32[0-6]\\d{2}|327[1-5]\\d{1}|3276[0-7]{1})$",
+			"regExpTip": "0 ~ 32767 之间"
+		},
+		{
+			"id":1,
+			"group":"wifi",
+			"viewName":"设备无线名称",
+			"devParam":"wireless.@wifi-iface[0].ssid",
+			"value":"天智星-体验店",
+			"describe":"1~40位（一个中文占3位）",
+			"rw":"rw",
+			"inputType":"text",
+			"options":"",
+			"required": 1,
+			"rule": "{\"byte\":[1,40]}",
+			"regExp": "",
+			"regExpTip": ""
+		}
+	]
+}

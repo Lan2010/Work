@@ -1,0 +1,104 @@
+
+<div class="toolbar">
+	<div class="action full back">
+		<a href="javascript: window.history.back();" class="btn icon-only m"><i class="fa fa-arrow-left"></i></a>
+	</div>
+	<div class="title">添加设备</div>
+
+</div>
+
+
+<div class="panel-wrap">
+	<div class="panel panel-form">
+		
+		<div class="panel-body">
+			<div class="cells cells-form">
+
+				<div class="cell">
+					<div class="hd"><label>录入方式</label></div>
+					<div class="bd">
+						<div class="control" id="addType">
+							<label class="radio-inline s2"><input name="addType" type="radio" value="1" checked=""><span>单个录入</span></label>
+							<label class="radio-inline s2"><input name="addType" type="radio" value="2" ><span>批量</span></label>
+						</div>
+					</div>
+				</div>
+				
+				<form id="formImport" enctype="multipart/form-data">
+				<div class="hide" id="divType2">
+					
+					<div class="cell">
+						<div class="hd required"><label>所属型号</label></div>
+						<div class="bd">
+							<div class="control">
+								<select id="model2" name="model" class="input" required></select>
+							</div>
+						</div>
+					</div>
+
+					<div class="cell">
+						<div class="hd required"><label>上传文件</label></div>
+						<div class="bd">
+							<div class="control">
+								<div class="fileupload fileupload-new fileupload-file" data-provides="fileupload">	
+									<div class="file-btn">
+										<span class="file-btn-inner btn default">
+											<span class="file-browse">浏览</span>
+											<span class="file-change">更改</span>
+											<input name="excel" type="file" class="default input-type2" isFile="excel" required />
+										</span>
+									</div>
+									<div class="file-input">
+										<div class="fileupload-preview"></div>
+										<span class="file-eraser" data-dismiss="fileupload">×</span>
+									</div>
+									<div class="thumbnail"></div>
+								</div>
+							</div>
+							<span class="prompt">
+								请严格按Excel模板格式填写，<a href="./static/resource/deviceTemplate.xlsx" target="_blank">点击下载Excel模板</a>
+							</span>
+						</div>
+					</div>
+				</div>
+				</form>
+				
+				<form id="formAdd">
+				<div class="" id="divType1">
+
+					<div class="cell">
+						<div class="hd required"><label>所属型号</label></div>
+						<div class="bd">
+							<div class="control">
+								<select id="model" name="model" class="input" required></select>
+							</div>
+						</div>
+					</div>
+
+					<div class="cell">
+						<div class="hd required"><label>设备编号</label></div>
+						<div class="bd">
+							<div class="control"><input id="devNumber" name="number" type="text" class="input input-type1" required devId='true' /></div>
+						</div>
+					</div>
+
+					<div class="cell">
+						<div class="hd required"><label>生产日期</label></div>
+						<div class="bd">
+							<div class="control"><input id="productTtime" name="productTtime" type="text" class="input input-type1" readonly required /></div>
+						</div>
+					</div>
+				</div>
+				</form>
+
+			</div>
+		</div>
+
+		<div class="panel-footer">
+			<button type="button" class="btn m blue" id="btnSubmit" >提交</button>
+			<button type="button" class="btn m default" onclick="javascript: window.history.back();">取消</button>
+		</div>
+		
+
+	</div>
+</div>

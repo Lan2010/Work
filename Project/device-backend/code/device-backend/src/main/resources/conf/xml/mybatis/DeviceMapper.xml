@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="core.mapper.DeviceMapper">
+	<resultMap id="resultMap" type="core.pojo.Device">
+		<id column="dev_id" property="id" />
+		<id column="dev_number" property="number" />
+		<id column="dev_model" property="model" />
+		<id column="belong_unit_id" property="belongUnitId" />
+		<id column="product_time" property="productTtime" jdbcType="TIMESTAMP" />
+		<id column="mac" property="mac" />
+		<id column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+		<id column="tag" property="tag" />
+		<id column="bind_account" property="bindAccount" />
+		<id column="bind_time" property="bindTime" jdbcType="TIMESTAMP" />
+		<id column="is_onlined" property="isOnlined" />
+		<id column="dev_passwd" property="devPasswd" />
+		
+	</resultMap>
+
+	<select id="getDevice" resultType="java.util.HashMap">
+		select td.dev_id as id,td.dev_number as number,td.dev_model as
+		model,td.belong_unit_id as belongUnitId,td.product_time as
+		productTtime,td.mac,td.add_time as addTime,td.tag,td.dev_passwd as devPasswd,td.bind_account as
+		bindAccount,td.bind_time as bindTime,td.is_onlined as
+		isOnlined,tdo.online_status as onlineStatus,tdo.record_time as
+		recordTime
+		from t_device td
+		left join
+		t_dev_online tdo
+		on
+		td.dev_number=tdo.dev_number
+		<where>
+			<if test="dev_id != null and dev_id != ''">
+				and td.dev_id = #{dev_id}
+			</if>
+			<if test="dev_number != null and dev_number != ''">
+				and td.dev_number = #{dev_number}
+			</if>
+			<if test="dev_model != null and dev_model != ''">
+				and td.dev_model = #{dev_model}
+			</if>
+			<if test="belong_unit_id != null">
+				and td.belong_unit_id = #{belong_unit_id}
+			</if>
+			<if test="product_time != null">
+				and td.product_time >
+				#{product_time,jdbcType="TIMESTAMP"}
+			</if>
+			<if test="mac != null and mac != ''">
+				and td.mac = #{mac}
+			</if>
+			<if test="add_time != null">
+				and td.add_time > #{add_time,jdbcType="TIMESTAMP"}
+			</if>
+			<if test="onlineStatus != null">
+				and tdo.online_status = #{onlineStatus}
+			</if>
+			<if test="bind_account != null and bind_account != ''">
+				and td.bind_account = #{bind_account}
+			</if>
+			<if test="bind_time != null">
+				and td.bind_time > #{bind_time,jdbcType="TIMESTAMP"}
+			</if>
+			<if test="is_onlined != null">
+				and td.is_onlined = #{is_onlined}
+			</if>
+			<if test="isBind == 0">
+				and (td.bind_account = "" or td.bind_account is null)
+			</if>
+			<if test="isBind == 1">
+				and td.bind_account != ""
+			</if>
+			and td.tag = 1
+		</where>
+		order by td.add_time desc
+		limit #{start},#{size}
+	</select>
+
+	<select id="getDeviceCount" resultType="Integer">
+		select count(td.dev_id)
+		from t_device td
+		left join
+		t_dev_online tdo
+		on
+		td.dev_number=tdo.dev_number
+		<where>
+			<if test="dev_id != null and dev_id != ''">
+				and td.dev_id = #{dev_id}
+			</if>
+			<if test="dev_number != null and dev_number != ''">
+				and td.dev_number = #{dev_number}
+			</if>
+			<if test="dev_model != null and dev_model != ''">
+				and td.dev_model = #{dev_model}
+			</if>
+			<if test="belong_unit_id != null ">
+				and td.belong_unit_id = #{belong_unit_id}
+			</if>
+			<if test="product_time != null">
+				and td.product_time >
+				#{product_time,jdbcType="TIMESTAMP"}
+			</if>
+			<if test="mac != null and mac != ''">
+				and td.mac = #{mac}
+			</if>
+			<if test="add_time != null">
+				and td.add_time > #{add_time,jdbcType="TIMESTAMP"}
+			</if>
+			<if test="onlineStatus != null">
+				and tdo.online_status = #{onlineStatus}
+			</if>
+			<if test="bind_account != null and bind_account != ''">
+				and td.bind_account = #{bind_account}
+			</if>
+			<if test="bind_time != null">
+				and td.bind_time > #{bind_time,jdbcType="TIMESTAMP"}
+			</if>
+			<if test="is_onlined != null ">
+				and td.is_onlined = #{is_onlined}
+			</if>
+			and td.tag = 1
+		</where>
+	</select>
+
+	<insert id="addDevice" parameterType="Device" useGeneratedKeys="true"
+		keyProperty="id" keyColumn="dev_id">
+		insert into t_device(
+		dev_number,
+		dev_model,
+		belong_unit_id,
+		product_time,
+		mac,
+		add_time,
+		bind_account,
+		bind_time,
+		is_onlined,
+		dev_passwd
+		tag
+		) values(
+		#{number},
+		#{model},
+		#{belongUnitId},
+		#{productTtime,jdbcType=TIMESTAMP},
+		#{mac},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{bindAccount},
+		#{bindTime,jdbcType=TIMESTAMP},
+		#{isOnlined},
+		#{tag},
+		#{devPasswd}		
+		)
+	</insert>
+
+	<select id="getNumber" resultMap="resultMap">
+		select * from t_device where
+		dev_number = #{number}
+		and tag != 0
+	</select>
+
+	<select id="getDeviceById" resultMap="resultMap">
+		select * from t_device
+		where
+		dev_id = #{id}
+	</select>
+
+	<update id="updateDevice" parameterType="Device">
+		update t_device
+		<set>
+			<if test="number != null and number != ''">
+				dev_number=#{number},
+			</if>
+			<if test="model != null and model != ''">
+				dev_model=#{model},
+			</if>
+			<if test="belongUnitId != null">
+				belong_unit_id=#{belongUnitId},
+			</if>
+			<if test="productTtime != null">
+				product_time=#{productTtime},
+			</if>
+			<if test="mac != null and mac != ''">
+				mac=#{mac},
+			</if>
+			<if test="addTime != null">
+				add_time=#{addTime},
+			</if>
+			<if test="tag != null">
+				tag=#{tag}
+			</if>
+			<if test="bindAccount != null and bindAccount != ''">
+				bind_account=#{bindAccount}
+			</if>
+			<if test="bindTime != null and bindTime != ''">
+				bind_time=#{bindTime}
+			</if>
+			<if test="isOnlined != null">
+				is_onlined=#{isOnlined}
+			</if>
+		</set>
+		where dev_id=#{id}
+	</update>
+
+	<!-- 更新设备绑定app的信息 -->
+	<update id="updateBind" parameterType="Device">
+		update t_device
+		<set>
+			<if test="bindAccount != null and bindAccount != ''">
+				bind_account=#{bindAccount},
+			</if>
+			<if test="bindTime != null">
+				bind_time=#{bindTime}
+			</if>
+		</set>
+		where dev_number=#{number}
+	</update>
+
+	<!-- 所有有效设备数 -->
+	<select id="countAll" resultType="Integer">
+		select count(is_onlined) as
+		count from t_device where tag='1'
+	</select>
+
+	<!-- 统计上线和未上线的设备数 -->
+	<select id="countOnlined" resultType="java.util.Map">
+		select
+		is_onlined,count(is_onlined) as count from t_device where tag='1'
+		GROUP BY is_onlined
+	</select>
+
+	<!-- 绑定的设备数 -->
+	<select id="countBind" resultType="Integer">
+		select count(dev_id) from
+		t_device where tag = '1' and bind_account is not null and bind_account
+		!= ''
+	</select>
+
+	<!-- 绑定的设备当前在线数 -->
+	<select id="countBindOnline" resultType="Integer">
+		select
+		count(o.online_status) from (select dev_number from t_device where tag
+		= '1' and bind_account is not null and bind_account != '') d
+		left join t_dev_online o on d.dev_number = o.dev_number
+		where o.online_status = 1
+	</select>
+
+	<!-- 未绑定的设备数 -->
+	<select id="countUnbound" resultType="Integer">
+		select count(dev_id) from
+		t_device where tag = '1' and (bind_account is null or bind_account =
+		'');
+	</select>
+
+	<!-- 未绑定设备当前在线数 -->
+	<select id="countUnboundOnline" resultType="Integer">
+		select
+		count(o.online_status) from (select dev_number from t_device where tag
+		= '1' and (bind_account is null or bind_account = ''))d
+		left join t_dev_online o on d.dev_number = o.dev_number
+		where o.online_status = 1 ;
+	</select>
+
+	<!-- 未绑定设备未上线数 -->
+	<select id="countUnboundUnonlined" resultType="Integer">
+		select
+		count(is_onlined) from t_device where tag = '1' and (bind_account is
+		null or bind_account = '') and is_onlined = 0
+	</select>
+
+
+	<!-- 根据设备编号检查设备是否存在 -->
+	<select id="checkDevExit" resultType="Integer" parameterType="java.lang.String">
+		select count(dev_id) from t_device where dev_number = #{devNum};
+	</select>
+
+	<!-- 根据条件获取所有设备ID -->
+	<select id="allDevId" resultType="Integer" parameterType="Condition">
+		select dev_id from t_device td
+		left join
+		t_dev_online tdo
+		on
+		td.dev_number=tdo.dev_number
+		<where>
+			<if test="model != null and model != ''">
+				and td.dev_model = #{model}
+			</if>
+			<if test="belongUnitId != null">
+				and td.belong_unit_id = #{belongUnitId}
+			</if>
+			<if test="onlineStatus != null">
+				and tdo.online_status = #{onlineStatus}
+			</if>
+			<if test="isOnlined != null">
+				and td.is_onlined = #{isOnlined}
+			</if>
+			<if test="isBind == 0">
+				and (td.bind_account = "" or td.bind_account is null)
+			</if>
+			<if test="isBind == 1">
+				and td.bind_account != ""
+			</if>
+			and td.tag = 1
+		</where>
+	</select>
+
+
+	<!-- 更新设备密码 -->
+	<update id="changePasswd" parameterType="Device">
+		update t_device set dev_passwd =#{devPasswd} where dev_id= #{id}		
+	</update>
+</mapper>

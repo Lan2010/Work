@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.device.unbind";
+option java_outer_classname = "DeviceUnBindServiceProto";
+
+package device.unbind;
+
+//设备解除绑定服务
+service DeviceUnBindService {
+    //设备解除绑定
+    rpc unBind(DeviceUnBindInfo) returns (Result){}
+}
+
+//设备解除绑定信息
+message DeviceUnBindInfo{
+    string mobile = 1; //手机号码-必填
+    string deviceId = 2; //设备ID-必填
+    string deviceType = 3;//设备类型 - 必填
+    string deviceMAC = 4; //设备MAC地址 - 必填
+    string deviceIP = 5; //设备IP - 选填
+    string deviceModel = 6;//设备型号 - 必填
+    string deviceOperType = 7; //设备操作方式 - 必填
+    int64 unBindTime = 8;//解绑时间 - 必填
+    string token = 9;//安全校验码 - 必填
+    string clientPlatform=10;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+

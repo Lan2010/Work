@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.tianzhixing.oms.grpc.proto.user.advert";
+option java_outer_classname = "UserClickAdvertServiceProto";
+
+package user.advert;
+
+//用户点击广告服务类
+service UserClickAdvertService {
+    //点击广告
+    rpc click(UserClickAdvertInfo) returns (Result){}
+}
+
+//用户点击广告信息
+message UserClickAdvertInfo{
+    string mobile = 1; //手机号码-选填
+    string advertId = 2; //广告ID-必填
+    string advertLink = 3;//广告链接-选填
+    enum AdvertType {
+        A = 0;
+        B = 1;
+        C = 3;
+        D = 4;
+        E = 5;
+        F = 6;
+        G = 7;
+    }
+    AdvertType advertType = 4;//广告类型-必填
+    string advertName = 5;//广告名字-必填
+    string advertInfo = 6;//广告信息-必填
+    int64 clickTime = 7; //点击时间-必填
+    string token = 8;//安全校验码-必填
+    string clientPlatform=9;//客户端平台 - ClientPlatform( WKWXAPP 挖矿WX小程序, WKIOS 挖矿APP IOS, WKANDROID 挖矿 APP ANDROID), 必填
+    string ip = 10; //IP - 必填
+}
+
+import "response_entity.proto";
+message Result{
+    ResponseEntity responseEntity = 1;
+}
+
